@@ -11,11 +11,11 @@ import static org.junit.Assert.assertEquals;
 public class GenericEntityTester<T> {
 
     private final Supplier<T> entityInitialiser;
-    private final JpaRepository<T, Long> repository;
+    private final JpaRepository<T, Integer> repository;
 
     private final List<EntityTestedField<?>> entityTestedFields;
 
-    private GenericEntityTester(Supplier<T> entityInitialiser, JpaRepository<T, Long> repository) {
+    private GenericEntityTester(Supplier<T> entityInitialiser, JpaRepository<T, Integer> repository) {
         this.entityInitialiser = entityInitialiser;
         this.repository = repository;
 
@@ -23,7 +23,7 @@ public class GenericEntityTester<T> {
     }
 
     public static <U> GenericEntityTester<U> buildNew(Supplier<U> entityInitialiser,
-                                                      JpaRepository<U, Long> repository) {
+                                                      JpaRepository<U, Integer> repository) {
         return new GenericEntityTester<>(entityInitialiser, repository);
     }
 
