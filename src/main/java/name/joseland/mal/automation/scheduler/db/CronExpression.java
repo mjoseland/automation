@@ -11,11 +11,11 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "sc_cron_expression")
-public class CronExpression extends TriggerConfig {
+public class CronExpression {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private int id;
 
     @Column(name = "description")
     private String description;

@@ -7,6 +7,6 @@ import javax.transaction.Transactional;
 
 @Repository
 @Transactional
-public interface CronExpressionRepository extends JpaRepository<CronExpression, Long> {
+public interface CronExpressionRepository extends JpaRepository<CronExpression, Integer> {
 
 }

@@ -7,6 +7,6 @@ import javax.transaction.Transactional;
 
 @Repository
 @Transactional
-public interface ScheduledRequestConfigRepository extends JpaRepository<ScheduledRequestConfig, Long> {
+public interface ScheduledRequestConfigRepository extends JpaRepository<ScheduledRequestConfig, Integer> {
 
 }

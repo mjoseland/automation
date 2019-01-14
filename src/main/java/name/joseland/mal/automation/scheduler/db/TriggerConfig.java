@@ -13,7 +13,7 @@ public abstract class TriggerConfig {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private int id;
 
 
     /**************************************************************************************************************/

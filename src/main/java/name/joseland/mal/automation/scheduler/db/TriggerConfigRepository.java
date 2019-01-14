@@ -7,6 +7,6 @@ import javax.transaction.Transactional;
 
 @Repository
 @Transactional
-public interface TriggerConfigRepository extends JpaRepository<TriggerConfig, Long> {
+public interface TriggerConfigRepository extends JpaRepository<TriggerConfig, Integer> {
 
 }

@@ -7,6 +7,6 @@ import javax.transaction.Transactional;
 
 @Repository
 @Transactional
-public interface CronTriggerConfigRepository extends JpaRepository<CronTriggerConfig, Long> {
+public interface CronTriggerConfigRepository extends JpaRepository<CronTriggerConfig, Integer> {
 
 }

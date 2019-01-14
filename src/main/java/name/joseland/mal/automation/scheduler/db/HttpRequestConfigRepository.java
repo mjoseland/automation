@@ -7,6 +7,6 @@ import javax.transaction.Transactional;
 
 @Repository
 @Transactional
-public interface HttpRequestConfigRepository extends JpaRepository<HttpRequestConfig, Long> {
+public interface HttpRequestConfigRepository extends JpaRepository<HttpRequestConfig, Integer> {
 
 }

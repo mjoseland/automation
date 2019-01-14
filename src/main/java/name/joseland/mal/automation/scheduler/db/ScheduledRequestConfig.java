@@ -14,7 +14,7 @@ public class ScheduledRequestConfig {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "trigger_config_id")
