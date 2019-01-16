@@ -20,7 +20,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping
-public class CronExpressionController {
+class CronExpressionController {
 
     private final CronExpressionRepository repository;
     private final CronExpressionResourceAssembler resourceAssembler;

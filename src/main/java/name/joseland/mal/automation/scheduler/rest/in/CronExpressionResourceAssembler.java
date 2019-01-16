@@ -9,7 +9,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 @Component
-public class CronExpressionResourceAssembler implements ResourceAssembler<CronExpression, Resource<CronExpression>> {
+class CronExpressionResourceAssembler implements ResourceAssembler<CronExpression, Resource<CronExpression>> {
 
 
     @Override
