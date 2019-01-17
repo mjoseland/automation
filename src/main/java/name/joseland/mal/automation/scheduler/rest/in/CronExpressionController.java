@@ -37,7 +37,7 @@ class CronExpressionController {
     /* ********************************************************************************************************** */
 
 
-    @GetMapping("/cronexpressions")
+    @GetMapping("/cron-expressions")
     public Resources<Resource<CronExpression>> retrieveAll() {
         List<Resource<CronExpression>> cronExpressions = repository.findAll().stream()
                 .map(resourceAssembler::toResource)
@@ -47,7 +47,7 @@ class CronExpressionController {
                 linkTo(methodOn(CronExpressionController.class).retrieveAll()).withSelfRel());
     }
 
-    @PostMapping("/cronexpressions")
+    @PostMapping("/cron-expressions")
     public ResponseEntity<?> create(@RequestBody CronExpression cronExpression) throws URISyntaxException {
         Resource<CronExpression> resource = resourceAssembler.toResource(repository.save(cronExpression));
 
@@ -56,7 +56,7 @@ class CronExpressionController {
                 .body(resource);
     }
 
-    @GetMapping("/cronexpressions/{id}")
+    @GetMapping("/cron-expressions/{id}")
     public Resource<CronExpression> retrieve(@PathVariable int id) {
         Optional<CronExpression> cronExpressionOpt = repository.findById(id);
 
@@ -66,7 +66,7 @@ class CronExpressionController {
         return resourceAssembler.toResource(cronExpressionOpt.get());
     }
 
-    @PutMapping("/cronexpressions/{id}")
+    @PutMapping("/cron-expressions/{id}")
     public ResponseEntity<?> update(@RequestBody CronExpression newCronExpression,
                                     @PathVariable int id) throws URISyntaxException {
         CronExpression savedCronExpression = repository.findById(id)
@@ -88,7 +88,7 @@ class CronExpressionController {
                 .body(resource);
     }
 
-    @DeleteMapping("/cronexpressions/{id}")
+    @DeleteMapping("/cron-expressions/{id}")
     public ResponseEntity<?> delete(@PathVariable int id) {
         repository.deleteById(id);
 
