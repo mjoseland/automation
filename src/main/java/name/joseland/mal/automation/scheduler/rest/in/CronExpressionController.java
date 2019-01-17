@@ -90,6 +90,7 @@ class CronExpressionController {
 
     @DeleteMapping("/cron-expressions/{id}")
     public ResponseEntity<?> delete(@PathVariable int id) {
+        // TODO handle object doesn't exist
         repository.deleteById(id);
 
         return ResponseEntity.noContent().build();

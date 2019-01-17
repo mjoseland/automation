@@ -20,6 +20,7 @@ public class ScheduledRequestConfig {
 
     // appended to ${automation.request-repository.path} to form uri of a HTTP request
     // eg. "/internal-requests/52/assemble", "/external-requests/45/assemble
+    @Column(name = "request_repository_mapping")
     private String requestRepositoryMapping;
 
 
