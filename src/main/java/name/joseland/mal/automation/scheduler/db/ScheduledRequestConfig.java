@@ -3,10 +3,8 @@ package name.joseland.mal.automation.scheduler.db;
 import javax.persistence.*;
 
 /**
- * Mapped DB entity for the table scheduler.sc_scheduled_request_config. Stores the config required to schedule a
- * single HTTP request with Spring's scheduling API (see: {@link org.springframework.scheduling.Trigger}.
- *
- * see: {@link CronExpression} and {@link HttpRequestConfig}.
+ * Mapped DB entity for the table scheduler.sc_scheduled_request_config. Stores the config required to schedule sending
+ * a HTTP request with Spring's scheduling API (see: {@link org.springframework.scheduling.Trigger}.
  */
 @Entity
 @Table(name = "sc_scheduled_request_config")
@@ -20,9 +18,9 @@ public class ScheduledRequestConfig {
     @JoinColumn(name = "trigger_config_id")
     private TriggerConfig triggerConfig;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "http_request_config_id")
-    private HttpRequestConfig httpRequestConfig;
+    // appended to ${automation.request-repository.path} to form uri of a HTTP request
+    // eg. "/internal-requests/52/assemble", "/external-requests/45/assemble
+    private String requestRepositoryMapping;
 
 
     /* ********************************************************************************************************** */
@@ -33,7 +31,7 @@ public class ScheduledRequestConfig {
     @Override
     public String toString() {
         return "ScheduledRequestConfig id=" + getId() + ", triggerConfig=" + getTriggerConfig().toString() +
-                ", httpRequestConfig=" + getHttpRequestConfig().toString();
+                ", requestRepositoryMapping=" + getRequestRepositoryMapping();
     }
 
     @Override
@@ -77,12 +75,12 @@ public class ScheduledRequestConfig {
         this.triggerConfig = triggerConfig;
     }
 
-    public HttpRequestConfig getHttpRequestConfig() {
-        return httpRequestConfig;
+    public String getRequestRepositoryMapping() {
+        return requestRepositoryMapping;
     }
 
-    public void setHttpRequestConfig(HttpRequestConfig httpRequestConfig) {
-        this.httpRequestConfig = httpRequestConfig;
+    public void setRequestRepositoryMapping(String requestRepositoryMapping) {
+        this.requestRepositoryMapping = requestRepositoryMapping;
     }
 
 }

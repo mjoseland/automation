@@ -19,8 +19,6 @@ public class ScheduledRequestConfigTest {
     private CronTriggerConfigRepository cronTriggerConfigRepository;
     @Autowired
     private CronExpressionRepository cronExpressionRepository;
-    @Autowired
-    private HttpRequestConfigRepository httpRequestConfigRepository;
 
     private GenericEntityTester<ScheduledRequestConfig> tester;
 
@@ -50,23 +48,13 @@ public class ScheduledRequestConfigTest {
         tester.addField(testTriggerConfig, updateTestTriggerConfig,
                 ScheduledRequestConfig::getTriggerConfig, ScheduledRequestConfig::setTriggerConfig);
 
-        // create test HttpRequestConfig instance
-        HttpRequestConfig testRequestConfig = new HttpRequestConfig();
-        testRequestConfig.setUrl(HttpRequestConfigTest.URL);
-        testRequestConfig.setVerb(HttpRequestConfigTest.VERB);
-        testRequestConfig.setBody(HttpRequestConfigTest.BODY);
-        httpRequestConfigRepository.save(testRequestConfig);
+        // provide HTTP request repo links
+        String requestRepositoryMapping = "/internal-requests/52/assemble";
+        String updateRequestRepositoryMapping = "/external-requests/45/assemble";
 
-        // create test HttpRequestConfig instance
-        HttpRequestConfig updateTestRequestConfig = new HttpRequestConfig();
-        updateTestRequestConfig.setUrl(HttpRequestConfigTest.URL_UPDATE);
-        updateTestRequestConfig.setVerb(HttpRequestConfigTest.VERB_UPDATE);
-        updateTestRequestConfig.setBody(HttpRequestConfigTest.BODY_UPDATE);
-        httpRequestConfigRepository.save(updateTestRequestConfig);
-
-        // provide testing field params for the httpRequestConfig field
-        tester.addField(testRequestConfig, updateTestRequestConfig,
-                ScheduledRequestConfig::getHttpRequestConfig, ScheduledRequestConfig::setHttpRequestConfig);
+        tester.addField(requestRepositoryMapping, updateRequestRepositoryMapping,
+                ScheduledRequestConfig::getRequestRepositoryMapping,
+                ScheduledRequestConfig::setRequestRepositoryMapping);
     }
 
     @Test
