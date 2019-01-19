@@ -12,33 +12,21 @@ import org.springframework.test.context.junit4.SpringRunner;
 @DataJpaTest
 public class CronTriggerConfigTest {
 
-    @Autowired
-    private CronTriggerConfigRepository repository;
+    static final String TEST_CRON_EXPRESSION = "0 15 10 ? * *";
+    static final String UPDATE_TEST_CRON_EXPRESSION = "10 21 01 ? * *";
 
     @Autowired
-    private CronExpressionRepository cronExpressionRepository;
+    private TriggerConfigRepository repository;
 
-    private GenericEntityTester<CronTriggerConfig> tester;
+    private GenericEntityTester<TriggerConfig> tester;
 
     @Before
     public void init() {
-        tester = GenericEntityTester.buildNew(CronTriggerConfig::new, repository);
-
-        // create test CronExpression instance
-        CronExpression testCronExpression = new CronExpression();
-        testCronExpression.setDescription(CronExpressionTest.DESCRIPTION);
-        testCronExpression.setExpression(CronExpressionTest.EXPRESSION);
-        cronExpressionRepository.save(testCronExpression);
-
-        // create updateTest CronExpression instance
-        CronExpression updateTestCronExpression = new CronExpression();
-        updateTestCronExpression.setDescription(CronExpressionTest.DESCRIPTION_UPDATE);
-        updateTestCronExpression.setExpression(CronExpressionTest.EXPRESSION_UPDATE);
-        cronExpressionRepository.save(updateTestCronExpression);
+        tester = GenericEntityTester.buildNew(TriggerConfig::new, repository);
 
         // provide testing field params for the cronExpression field
-        tester.addField(testCronExpression, updateTestCronExpression,
-                CronTriggerConfig::getCronExpression, CronTriggerConfig::setCronExpression);
+        tester.addField(TEST_CRON_EXPRESSION, UPDATE_TEST_CRON_EXPRESSION,
+                TriggerConfig::getCronExpression, TriggerConfig::setCronExpression);
     }
 
     @Test

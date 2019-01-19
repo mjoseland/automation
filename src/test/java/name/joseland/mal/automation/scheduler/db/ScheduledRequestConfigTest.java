@@ -16,9 +16,7 @@ public class ScheduledRequestConfigTest {
     private ScheduledRequestConfigRepository repository;
 
     @Autowired
-    private CronTriggerConfigRepository cronTriggerConfigRepository;
-    @Autowired
-    private CronExpressionRepository cronExpressionRepository;
+    private TriggerConfigRepository triggerConfigRepository;
 
     private GenericEntityTester<ScheduledRequestConfig> tester;
 
@@ -27,22 +25,16 @@ public class ScheduledRequestConfigTest {
         tester = GenericEntityTester.buildNew(ScheduledRequestConfig::new, repository);
 
         // create test TriggerConfig instance
-        CronExpression testCronExpression = new CronExpression();
-        testCronExpression.setDescription(CronExpressionTest.DESCRIPTION);
-        testCronExpression.setExpression(CronExpressionTest.EXPRESSION);
-        cronExpressionRepository.save(testCronExpression);
-        CronTriggerConfig testTriggerConfig = new CronTriggerConfig();
-        testTriggerConfig.setCronExpression(testCronExpression);
-        cronTriggerConfigRepository.save(testTriggerConfig);
+        TriggerConfig testTriggerConfig = new TriggerConfig();
+        testTriggerConfig.setType(TriggerConfig.Type.CRON);
+        testTriggerConfig.setCronExpression(CronTriggerConfigTest.TEST_CRON_EXPRESSION);
+        triggerConfigRepository.save(testTriggerConfig);
 
-        // create test TriggerConfig instance
-        CronExpression updateTestCronExpression = new CronExpression();
-        updateTestCronExpression.setDescription(CronExpressionTest.DESCRIPTION_UPDATE);
-        updateTestCronExpression.setExpression(CronExpressionTest.EXPRESSION_UPDATE);
-        cronExpressionRepository.save(updateTestCronExpression);
-        CronTriggerConfig updateTestTriggerConfig = new CronTriggerConfig();
-        updateTestTriggerConfig.setCronExpression(updateTestCronExpression);
-        cronTriggerConfigRepository.save(updateTestTriggerConfig);
+        // create update test TriggerConfig instance
+        TriggerConfig updateTestTriggerConfig = new TriggerConfig();
+        testTriggerConfig.setType(TriggerConfig.Type.CRON);
+        updateTestTriggerConfig.setCronExpression(CronTriggerConfigTest.UPDATE_TEST_CRON_EXPRESSION);
+        triggerConfigRepository.save(updateTestTriggerConfig);
 
         // provide testing field params for the triggerConfig field
         tester.addField(testTriggerConfig, updateTestTriggerConfig,
@@ -50,7 +42,7 @@ public class ScheduledRequestConfigTest {
 
         // provide HTTP request repo links
         String requestRepositoryMapping = "/internal-requests/52/assemble";
-        String updateRequestRepositoryMapping = "/external-requests/45/assemble";
+        String updateRequestRepositoryMapping = "/internal-requests/45/assemble";
 
         tester.addField(requestRepositoryMapping, updateRequestRepositoryMapping,
                 ScheduledRequestConfig::getRequestRepositoryMapping,

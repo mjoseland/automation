@@ -7,19 +7,33 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "sc_trigger_config")
-@DiscriminatorColumn(name = "discriminator", discriminatorType = DiscriminatorType.STRING)
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public abstract class TriggerConfig {
+public class TriggerConfig {
+
+    enum Type {
+        CRON
+    }
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Column(name = "itype")
+    @Enumerated(EnumType.STRING)
+    private Type type;
+
+    @Column(name = "cron_expression")
+    private String cronExpression;
 
 
     /* ********************************************************************************************************** */
     /* ********************************************* PUBLIC METHODS ********************************************* */
     /* ********************************************************************************************************** */
 
+    @Override
+    public String toString() {
+        return "TriggerConfig id=" + getId() + ", type" + getType().name() + ", cronExpression=" + getCronExpression();
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -52,6 +66,22 @@ public abstract class TriggerConfig {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
+    }
+
+    public String getCronExpression() {
+        return cronExpression;
+    }
+
+    public void setCronExpression(String cronExpression) {
+        this.cronExpression = cronExpression;
     }
 
 }
