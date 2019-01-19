@@ -40,4 +40,7 @@ dependencies {
     compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.0.Final'
     runtimeOnly group: 'org.postgresql', name: 'postgresql'
     testImplementation group: 'com.h2database', name: 'h2'
+    // https://mvnrepository.com/artifact/com.vladmihalcea/hibernate-types-52
+    // added for JsonNodeBinaryType
+    compile group: 'com.vladmihalcea', name: 'hibernate-types-52', version: '2.4.0'
 }
