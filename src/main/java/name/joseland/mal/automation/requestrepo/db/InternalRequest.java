@@ -14,7 +14,7 @@ import javax.persistence.Table;
 public class InternalRequest {
 
     @Id
-    private int id;
+    private Integer id;
 
     // aka. HTTP verb
     @Column(name = "http_method")
@@ -33,13 +33,48 @@ public class InternalRequest {
     private JsonNode body;
 
 
+    /* ********************************************************************************************************** */
+    /* ********************************************* PUBLIC METHODS ********************************************* */
+    /* ********************************************************************************************************** */
 
 
-    public int getId() {
+    @Override
+    public String toString() {
+        // body too long to include
+        return "InternalRequest id=" + getId() + ", httpMethod=" + getHttpMethod().name() +
+                ", serviceId=" + getServiceId() + ", resource=" + getResource();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+
+        if (!(o instanceof InternalRequest))
+            return false;
+
+        return getId() != null && getId().equals(((InternalRequest) o).getId());
+    }
+
+    @Override
+    public int hashCode() {
+        if (getId() != null)
+            return getId();
+
+        return System.identityHashCode(this);
+    }
+
+
+    /* ********************************************************************************************************** */
+    /* ********************************************* GETTERS/SETTERS ******************************************** */
+    /* ********************************************************************************************************** */
+
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
