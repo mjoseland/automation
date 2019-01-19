@@ -4,6 +4,7 @@ import name.joseland.mal.automation.scheduler.db.CronExpression;
 import name.joseland.mal.automation.scheduler.db.CronExpressionRepository;
 import name.joseland.mal.automation.core.rest.in.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.ResponseEntity;
@@ -90,8 +91,11 @@ class CronExpressionController {
 
     @DeleteMapping("/cron-expressions/{id}")
     public ResponseEntity<?> delete(@PathVariable int id) {
-        // TODO handle object doesn't exist
-        repository.deleteById(id);
+        try {
+            repository.deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException("CronExpression", id);
+        }
 
         return ResponseEntity.noContent().build();
     }
