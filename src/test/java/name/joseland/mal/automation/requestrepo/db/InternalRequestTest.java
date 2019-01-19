@@ -11,6 +11,10 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.junit4.SpringRunner;
 
+/**
+ * TODO: Currently fails due to jsonb TypeDef,
+ *       see: https://stackoverflow.com/questions/39620317/how-can-solve-json-column-in-h2
+ */
 @RunWith(SpringRunner.class)
 @DataJpaTest
 public class InternalRequestTest {
