@@ -4,7 +4,8 @@ import javax.persistence.*;
 
 /**
  * Mapped DB entity for the table scheduler.sc_scheduled_request_config. Stores the config required to schedule sending
- * a HTTP request with Spring's scheduling API (see: {@link org.springframework.scheduling.Trigger}.
+ * an internal HTTP request with Spring's scheduling API (see: {@link org.springframework.scheduling.Trigger}.
+ *
  */
 @Entity
 @Table(name = "sc_scheduled_request_config")
@@ -14,7 +15,7 @@ public class ScheduledRequestConfig {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "trigger_config_id")
     private TriggerConfig triggerConfig;
 
