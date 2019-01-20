@@ -86,6 +86,7 @@ public class TriggerConfigController {
                 .body(resource);
     }
 
+    // TODO handle TriggerConfigs that are still referenced by a ScheduledRequestConfig
     @DeleteMapping("/trigger-configs/{id}")
     public ResponseEntity<?> delete(@PathVariable int id) {
         try {
