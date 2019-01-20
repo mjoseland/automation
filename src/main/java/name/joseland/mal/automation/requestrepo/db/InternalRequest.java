@@ -9,6 +9,10 @@ import org.springframework.http.HttpMethod;
 
 import javax.persistence.*;
 
+/**
+ * Stores a request that can be sent within the automation environment. Allows services to handle requests to be found
+ * by serviceId eg. with Eureka.
+ */
 @Entity
 @Table(name = "rr_internal_request")
 @TypeDefs({
@@ -25,11 +29,11 @@ public class InternalRequest {
     @Enumerated(EnumType.STRING)
     private HttpMethod httpMethod;
 
-    // eg. "scheduler"
+    // eg. "text-source-monitor"
     @Column(name = "service_id")
     private String serviceId;
 
-    // should start with "/", eg. "/cron-expressions/2"
+    // should start with "/", eg. "/http-monitors/2/perform-check"
     @Column(name = "resource_id")
     private String resource;
 
