@@ -29,7 +29,7 @@ public class InternalRequest {
     @Enumerated(EnumType.STRING)
     private HttpMethod httpMethod;
 
-    // eg. "text-source-monitor"
+    // eg. "data-source-monitor"
     @Column(name = "service_id")
     private String serviceId;
 
