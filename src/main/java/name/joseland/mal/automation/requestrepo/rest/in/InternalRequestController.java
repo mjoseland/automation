@@ -90,12 +90,14 @@ public class InternalRequestController {
                 .body(savedInternalRequest);
     }
 
-    @DeleteMapping
+    @DeleteMapping("internal-requests/{id}")
     public ResponseEntity<?> delete(@PathVariable int id) {
         Optional<InternalRequest> internalRequestOpt = repository.findById(id);
 
         if (internalRequestOpt.isEmpty())
             throw new ResourceNotFoundException("InternalRequest", id);
+
+        repository.delete(internalRequestOpt.get());
 
         return ResponseEntity.noContent().build();
     }
