@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Table(name = "sc_trigger_config")
 public class TriggerConfig {
 
-    enum Type {
+    public enum Type {
         CRON
     }
 

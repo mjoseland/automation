@@ -19,7 +19,7 @@ public class ScheduledRequestConfig {
     @JoinColumn(name = "trigger_config_id")
     private TriggerConfig triggerConfig;
 
-    // appended to ${automation.request-repository.path} to form uri of a HTTP request
+    // appended to request repository IP and context path to form uri of a HTTP request
     // eg. "/internal-requests/52/assembled"
     @Column(name = "request_repository_mapping")
     private String requestRepositoryMapping;
