@@ -28,12 +28,25 @@ public class TimedResponseHistory<T> {
         this.minDuration = null;
     }
 
-    public static TimedResponseHistory build() {
-        return new TimedResponseHistory();
+    /**
+     * Static builder.
+     *
+     * @param <U>   the response body type of all history items
+     * @return      the new TimedResponseHistory
+     */
+    public static <U> TimedResponseHistory<U> build() {
+        return new TimedResponseHistory<>();
     }
 
-    public static TimedResponseHistory build(Duration minDuration) {
-        TimedResponseHistory timedResponseHistory = new TimedResponseHistory();
+    /**
+     * Static builder with minDuration.
+     *
+     * @param minDuration   the minimum duration to store history items after they were recieved
+     * @param <U>           the response body type of all history items
+     * @return              the new TimedResponseHistory
+     */
+    public static <U> TimedResponseHistory<U> build(Duration minDuration) {
+        TimedResponseHistory timedResponseHistory = new TimedResponseHistory<>();
         timedResponseHistory.setMinDuration(minDuration);
 
         return timedResponseHistory;
