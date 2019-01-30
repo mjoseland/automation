@@ -9,7 +9,7 @@ import java.io.InputStream;
 import java.net.http.HttpResponse;
 
 /**
- * {@link HttpResponse.BodyHandler} implementation.
+ * {@link HttpResponse.BodyHandler} implementation for a response with a JSON-formatted body.
  */
 public class JsonBodyHandler implements HttpResponse.BodyHandler<JsonNode> {
 
