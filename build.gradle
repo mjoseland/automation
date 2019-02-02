@@ -11,10 +11,11 @@ buildscript {
 }
 
 apply plugin: 'java'
-apply plugin: 'eclipse-wtp'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
-apply plugin: 'war'
+//apply plugin: 'war'
 
 group = 'name.joseland.mal'
 version = '0.0.1-SNAPSHOT'
@@ -24,13 +25,30 @@ repositories {
     mavenCentral()
 }
 
-configurations {
-    providedRuntime
+dependencyManagement {
+    imports {
+        mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Finchley.SR2'
+    }
 }
 
 dependencies {
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
-    providedRuntime group: 'org.springframework.boot', name: 'spring-boot-starter-tomcat'
+    compile('org.springframework.cloud:spring-cloud-starter-netflix-eureka-server')
+    testCompile('org.springframework.boot:spring-boot-starter-test')
 
-    testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+    // JAXB APIs removed from JDK 11
+    // https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api
+    compile group: 'javax.xml.bind', name: 'jaxb-api', version: '2.2.3'
+    // https://mvnrepository.com/artifact/com.sun.xml.bind/jaxb-core
+    compile group: 'com.sun.xml.bind', name: 'jaxb-core', version: '2.3.0.1'
+    // https://mvnrepository.com/artifact/com.sun.xml.bind/jaxb-impl
+    compile group: 'com.sun.xml.bind', name: 'jaxb-impl', version: '2.3.2'
+
+}
+
+
+eclipse {
+    classpath {
+        containers.remove('org.eclipse.jdt.launching.JRE_CONTAINER')
+        containers 'org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8'
+    }
 }
