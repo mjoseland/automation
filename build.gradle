@@ -1,12 +1,18 @@
 buildscript {
     ext {
         springBootVersion = '2.1.1.RELEASE'
+        gradleDockerVersion = '0.21.0'
     }
     repositories {
         mavenCentral()
+        // for plugin: com.palantir.docker
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("gradle.plugin.com.palantir.gradle.docker:gradle-docker:${gradleDockerVersion}")
     }
 }
 
@@ -15,6 +21,7 @@ apply plugin: 'eclipse-wtp'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'war'
+apply plugin: 'com.palantir.docker'
 
 group = 'name.joseland.mal'
 version = '0.0.1-SNAPSHOT'
@@ -40,4 +47,17 @@ dependencies {
     compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.0.Final'
     runtimeOnly group: 'org.postgresql', name: 'postgresql'
     testImplementation group: 'com.h2database', name: 'h2'
+}
+
+// copy unzipped jar into build/dependency
+task unpack(type:Copy) {
+    dependsOn bootJar
+    from(zipTree(tasks.bootJar.outputs.files.singleFile))
+    into("build/dependency")
+}
+
+docker {
+    name "${project.group}/${bootJar.baseName}"
+    copySpec.from(tasks.unpack.outputs).into("dependency")
+    buildArgs(['DEPENDENCY': "dependency"])
 }
