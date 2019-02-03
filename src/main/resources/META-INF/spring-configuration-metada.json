@@ -1,0 +1,21 @@
+{
+  "properties": [
+    {
+      "name": "automation.request-repository.id",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "automation.request-repository.context-path",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "automation.scheduler.scheduled-request.interrupt-if-running",
+      "type": "java.lang.Boolean"
+    },
+    {
+      "name": "automation.scheduler.task-scheduler.pool-size",
+      "type": "java.lang.Integer"
+    }
+
+  ]
+}
