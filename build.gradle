@@ -1,24 +1,36 @@
 buildscript {
     ext {
         springBootVersion = '2.1.1.RELEASE'
+        gradleDockerVersion = '0.21.0'
     }
     repositories {
         mavenCentral()
+        // for plugin: com.palantir.docker
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("gradle.plugin.com.palantir.gradle.docker:gradle-docker:${gradleDockerVersion}")
     }
 }
 
 apply plugin: 'java'
 apply plugin: 'eclipse-wtp'
+apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'war'
+apply plugin: 'com.palantir.docker'
 
 group = 'name.joseland.mal'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 11
+
+bootJar {
+    baseName = 'request-repository'
+}
 
 repositories {
     mavenCentral()
@@ -28,10 +40,17 @@ configurations {
     providedRuntime
 }
 
+dependencyManagement {
+    imports {
+        mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Greenwich.RELEASE'
+    }
+}
+
 dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
     providedRuntime group: 'org.springframework.boot', name: 'spring-boot-starter-tomcat'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas'
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-client'
 
     testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
 
@@ -40,7 +59,26 @@ dependencies {
     compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.0.Final'
     runtimeOnly group: 'org.postgresql', name: 'postgresql'
     testImplementation group: 'com.h2database', name: 'h2'
+
+    // JAXB APIs removed from JDK 11
+    compile group: 'javax.xml.bind', name: 'jaxb-api', version: '2.2.3'
+    compile group: 'com.sun.xml.bind', name: 'jaxb-core', version: '2.3.0.1'
+    compile group: 'com.sun.xml.bind', name: 'jaxb-impl', version: '2.3.2'
+
     // https://mvnrepository.com/artifact/com.vladmihalcea/hibernate-types-52
     // added for JsonNodeBinaryType
     compile group: 'com.vladmihalcea', name: 'hibernate-types-52', version: '2.4.0'
+}
+
+// copy unzipped jar into build/dependency
+task unpack(type:Copy) {
+    dependsOn bootJar
+    from(zipTree(tasks.bootJar.outputs.files.singleFile))
+    into("build/dependency")
+}
+
+docker {
+    name "${project.group}/${bootJar.baseName}"
+    copySpec.from(tasks.unpack.outputs).into("dependency")
+    buildArgs(['DEPENDENCY': "dependency"])
 }
