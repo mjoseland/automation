@@ -40,11 +40,23 @@ configurations {
     providedRuntime
 }
 
+dependencyManagement {
+    imports {
+        mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Greenwich.RELEASE'
+    }
+}
+
 dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
     providedRuntime group: 'org.springframework.boot', name: 'spring-boot-starter-tomcat'
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-client'
 
     testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+
+    // JAXB APIs removed from JDK 11
+    compile group: 'javax.xml.bind', name: 'jaxb-api', version: '2.2.3'
+    compile group: 'com.sun.xml.bind', name: 'jaxb-core', version: '2.3.0.1'
+    compile group: 'com.sun.xml.bind', name: 'jaxb-impl', version: '2.3.2'
 }
 
 // copy unzipped jar into build/dependency
