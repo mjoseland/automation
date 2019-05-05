@@ -1,5 +1,5 @@
-A single-user, general-purpose application with a focus on automating the day-to-day burden of seeking and filtering
-information. Built in a microservices architecture with docker image builds available for all services.
+A single-user, general-purpose application with a focus on automating day-to-day information seeking and filtering.
+Built in a microservices architecture with docker image builds available for all services.
 
 Feature-specific readme files with API documentation and build/deploy instructions will be written once a basic level
 of functionality has been achieved.
@@ -11,10 +11,11 @@ In this repository, Git branching is used to isolate the resources for individua
 * 
 
 #### Features (Planned)
-* Highly configurable multi-service events
+* Highly configurable events that recruit multiple services
 * API call scheduling for internal services
-* Data source checks with tests and conditional handlers
-* Notifications with configurable transmission method (email only for MVP)
+* Data source retrieval with tests and conditional handlers
+* Email notifications
+* Other notification delivery methods (long term)
 * Calendar API interaction (long term)
 * Front end for all configuration operations (long term)
 
@@ -22,8 +23,8 @@ In this repository, Git branching is used to isolate the resources for individua
 * Notifications for online store pricing updates or sales
 * Machine uptime monitoring
 * Blog post notifications
-* Upcoming digital media
-* Weather alerts
+* Digital media releases
+* Conditional weather alerts
 * Centralised Anki (long term)
 
 # Services
@@ -35,11 +36,11 @@ In this repository, Git branching is used to isolate the resources for individua
 When a scheduled request is triggered:
 1. Config for an internal (to the application) JSON-body HTTP request is retrieved from the request repository.
 2. The request is assembled and sent.
-3. The response so step 2 is stored as part of the scheduled request's short term history.
+3. The response to step 2 is stored as part of the scheduled request's short term history.
 
 Scheduled request item config can be subject to CRUD operations at any time through a data API. Any changes immediately 
 start, stop, or modify the scheduled request that corresponds to the config. Short term scheduled request history is 
-available as GET call to the associated config.
+available as GET call to the associated config resource.
 
 TODO:
 * Scheduled request manager for high-level implementation of steps 1-3
@@ -62,24 +63,28 @@ TODO:
 **Singleton:** N<br>
 **Stateful:** Y
 
+Stores resources store the information necessary to:
 1. Retrieves an internal or external HTTP request from the request repository
 2. Assembles and sends the request
-3. Performs a configurable test and optional associated translation to a JSON object on the response
+3. With the received response: performs a configurable test and optional associated translation to a JSON object
 4. If the test passes, sends the JSON reduction to a configurable internal service
 
 TODO:
 * Everything
 
-#### Notifier
+#### Email Notifier
 **Primary Branch:** N/A<br>
 **Singleton:** N<br>
 **Stateful:** Y
 
-Notifications with configurable transmission method. Available transmission methods will be limited to email only in 
-the medium term. 
+Sends an email notification on receiving a valid request.
 
-**Notifier Type:** Email<br>
-* Configurable fields are email address, subject prefix
+**Required Fields:**<br>
+* Email address
+* Subject
+
+**Optional Fields:**<br>
+* Body
 
 TODO:
 * Everything
