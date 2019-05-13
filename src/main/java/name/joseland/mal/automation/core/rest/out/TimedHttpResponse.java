@@ -58,8 +58,8 @@ public class TimedHttpResponse<T> implements HttpResponse<T>, Comparable<TimedHt
 
     @Override
     public String toString() {
-        return "httpResponse=" + httpResponse.toString() +
-                ", timeRequested=" + timeRequested.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME) +
+        return "httpResponse=[" + httpResponse.toString() +
+                "], timeRequested=" + timeRequested.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME) +
                 ", timeReceived=" + timeReceived.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
     }
 
@@ -89,6 +89,9 @@ public class TimedHttpResponse<T> implements HttpResponse<T>, Comparable<TimedHt
 
     @Override
     public int compareTo(TimedHttpResponse<T> o) {
+        if (o == null)
+            return 1;
+
         int result = getTimeReceived().compareTo(o.getTimeReceived());
         if (result != 0)
             return result;
