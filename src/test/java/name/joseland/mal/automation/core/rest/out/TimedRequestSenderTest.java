@@ -15,9 +15,9 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class TimedRequestSenderTest {
 
@@ -28,10 +28,6 @@ public class TimedRequestSenderTest {
     private static String stubUrl = "/test/resource";
     private static JsonNode requestBodyJsonNode = null;
     private static JsonNode responseBodyJsonNode = null;
-
-    @BeforeClass
-    public static void before() {
-    }
 
     private static WireMockServer wireMockServer;
 
@@ -112,7 +108,7 @@ public class TimedRequestSenderTest {
         // assert that the time the request was sent is before the time the response ras recieved
         assertTrue(response.getTimeRequested().isBefore(response.getTimeReceived()));
 
-        // verify that the request was recieved by the stub
+        // verify that the request was received by the stub
         // on failure, throws com.github.tomakehurst.wiremock.client.VerificationException
         verify(putRequestedFor(urlMatching(stubUrl))
                 .withRequestBody(matching(".*" + requestBodyJsonNode.asText() + ".*"))
