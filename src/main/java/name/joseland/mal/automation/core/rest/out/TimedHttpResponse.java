@@ -44,7 +44,7 @@ public class TimedHttpResponse<T> implements HttpResponse<T>, Comparable<TimedHt
                                                  @NonNull LocalDateTime timeRequested,
                                                  @NonNull LocalDateTime timeReceived) {
         if (timeRequested != null && timeReceived != null && timeRequested.isAfter(timeReceived))
-            throw new IllegalArgumentException("Param timeRequested is before timeReceived");
+            throw new IllegalArgumentException("Param timeRequested is after timeReceived");
 
         return new TimedHttpResponse<>(Objects.requireNonNull(httpResponse),
                 Objects.requireNonNull(timeRequested), Objects.requireNonNull(timeReceived));
