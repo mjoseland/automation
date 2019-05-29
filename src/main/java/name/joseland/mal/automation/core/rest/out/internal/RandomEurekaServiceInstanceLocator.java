@@ -41,6 +41,9 @@ public class RandomEurekaServiceInstanceLocator implements ServiceInstanceLocato
         if (serviceInstances.isEmpty())
             throw new InternalServiceNotFoundException(resourceId);
 
+        if (serviceInstances.size() == 1)
+            return serviceInstances.get(0);
+
         int randomIndex = new Random().nextInt(serviceInstances.size());
 
         return serviceInstances.get(randomIndex);
