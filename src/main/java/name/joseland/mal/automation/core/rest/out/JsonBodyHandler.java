@@ -1,5 +1,6 @@
 package name.joseland.mal.automation.core.rest.out;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import name.joseland.mal.automation.core.rest.HttpRequestException;
@@ -13,6 +14,12 @@ import java.net.http.HttpResponse;
  */
 public class JsonBodyHandler implements HttpResponse.BodyHandler<JsonNode> {
 
+    /**
+     * Returns a {@link HttpResponse.BodySubscriber<JsonNode>} that can convert response body bytes into a
+     * {@link JsonNode}.
+	 *
+     * @throws JsonParseException  if the response format can't be parsed as JSON
+	 */
     @Override
     public HttpResponse.BodySubscriber<JsonNode> apply(HttpResponse.ResponseInfo responseInfo) {
         HttpResponse.BodySubscriber<InputStream> stringSubscriber = HttpResponse.BodyHandlers.ofInputStream()
