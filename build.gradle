@@ -59,7 +59,10 @@ dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
     compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.0.Final'
     runtimeOnly group: 'org.postgresql', name: 'postgresql'
-    testImplementation group: 'com.h2database', name: 'h2'
+    testImplementation group: 'org.testcontainers', name: 'testcontainers', version: '1.11.3'
+    testImplementation group: 'org.testcontainers', name: 'postgresql', version: '1.11.3'
+
+
 
     // JAXB APIs removed from JDK 11
     compile group: 'javax.xml.bind', name: 'jaxb-api', version: '2.2.3'
