@@ -44,6 +44,7 @@ public class InternalRequestTest {
 
     private GenericEntityTester<InternalRequest> tester;
 
+
     @Before
     public void init() {
         GenericEntityTester<InternalRequest> tester = GenericEntityTester.buildNew(InternalRequest::new,
@@ -78,6 +79,7 @@ public class InternalRequestTest {
 
 
     static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
+        @Override
         public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
             TestPropertyValues.of(
                     "spring.datasource.url=" + postgreSqlContainer.getJdbcUrl(),
