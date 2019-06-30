@@ -2,6 +2,7 @@ package name.joseland.mal.automation.core.rest.out;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.function.Supplier;
@@ -10,6 +11,8 @@ import java.util.function.Supplier;
  * Stores a history of {@link TimedHttpResponse} objects for a mutable duration after they were received. The
  * completeness of the history isn't guaranteed, ie. when the minDuration field has been increased to one that includes
  * responses that have previously been excluded.
+ *
+ * @param <T> the body type of responses
  */
 public class TimedResponseHistory<T> {
 
@@ -41,12 +44,13 @@ public class TimedResponseHistory<T> {
     /**
      * Static builder with minDuration.
      *
-     * @param minDuration   the minimum duration to store history items after they were recieved
+     * @param minDuration   the minimum duration to store history items after they were received
      * @param <U>           the response body type of all history items
      * @return              the new TimedResponseHistory
+     * @throws IllegalArgumentException if minDuration is negative or zero
      */
     public static <U> TimedResponseHistory<U> build(Duration minDuration) {
-        TimedResponseHistory timedResponseHistory = new TimedResponseHistory<>();
+        TimedResponseHistory<U> timedResponseHistory = new TimedResponseHistory<>();
         timedResponseHistory.setMinDuration(minDuration);
 
         return timedResponseHistory;
@@ -64,6 +68,8 @@ public class TimedResponseHistory<T> {
      * @return  responses to requests sent by this object
      */
     public SortedSet<TimedHttpResponse<T>> getHistory() {
+        removeExpiredResponses();
+
         SortedSet<TimedHttpResponse<T>> defensiveCopy = sortedSetSupplier.get();
         defensiveCopy.addAll(history);
 
@@ -71,13 +77,15 @@ public class TimedResponseHistory<T> {
     }
 
     /**
-     * Adds a response to the history if it is within the required duration.
+     * Adds a response to the history.
      *
-     * @param response the response to attempt to add to the history.
+     * @param responses the responses to add to the history
      */
-    public void addTimedResponse(TimedHttpResponse<T> response) {
-        if (responseIsInsideDuration(response))
-            history.add(response);
+    @SafeVarargs
+    public final void add(TimedHttpResponse<T>... responses) {
+        history.addAll(Arrays.asList(responses));
+
+        removeExpiredResponses();
     }
 
     /**
@@ -91,12 +99,15 @@ public class TimedResponseHistory<T> {
 
     /**
      * @param minDuration the new minimum duration
+	 * @throws IllegalArgumentException if minDuration is negative or zero
      */
     public void setMinDuration(Duration minDuration) {
+        if (minDuration.isNegative() || minDuration.isZero())
+            throw new IllegalArgumentException("Min duration negative or zero");
+
         this.minDuration = minDuration;
 
-        // remove history that isn't inside the new minDuration
-        history.removeIf(response -> !responseIsInsideDuration(response));
+		removeExpiredResponses();
     }
 
 
@@ -105,6 +116,16 @@ public class TimedResponseHistory<T> {
     /* ********************************************************************************************************** */
 
 
+    /**
+     * Remove the items in the history that weren't received after minDuration time before now.
+     */
+	private void removeExpiredResponses() {
+        history.removeIf(response -> !responseIsInsideDuration(response));
+    }
+
+    /**
+     * @return true if the response was received after minDuration time before now
+     */
     private boolean responseIsInsideDuration(TimedHttpResponse<T> response) {
         return response.getTimeReceived()
                 .isAfter(LocalDateTime.now().minus(getMinDuration()));
