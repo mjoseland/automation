@@ -21,34 +21,31 @@ import static org.junit.Assert.assertTrue;
 
 public class TimedRequestSenderTest {
 
-    private static int port = 8082;
+    private static final int PORT = 8082;
+    private static final String STUB_URL = "/test/resource";
 
-    private static int status = HttpStatus.OK.value();
-    private static String jsonTypeStr = MediaType.APPLICATION_JSON;
-    private static String stubUrl = "/test/resource";
+    private static final String REQUEST_BODY_JSON_STR = "{ \"requestParam\": \"generic_string\"}";
+    private static final String RESPONSE_BODY_JSON_STR = "{ \"success\": true }";
+
     private static JsonNode requestBodyJsonNode = null;
     private static JsonNode responseBodyJsonNode = null;
 
     private static WireMockServer wireMockServer;
 
     @BeforeClass
-    public static void startServer() {
-        wireMockServer = new WireMockServer(port);
+    public static void beforeClass() throws IOException {
+        // build and start wireMockServer
+        wireMockServer = new WireMockServer(PORT);
         wireMockServer.start();
-        configureFor("localhost", port);
+        configureFor("localhost", PORT);
 
         // initialise the test request and response bodies
-        try {
-            requestBodyJsonNode = new ObjectMapper().readTree("{ \"requestParam\": \"generic_string\"}");
-            responseBodyJsonNode = new ObjectMapper().readTree("{ \"success\": true }");
-        } catch (IOException e) {
-            e.printStackTrace();
-            requestBodyJsonNode = responseBodyJsonNode = null;
-        }
+		requestBodyJsonNode = new ObjectMapper().readTree(REQUEST_BODY_JSON_STR);
+		responseBodyJsonNode = new ObjectMapper().readTree(RESPONSE_BODY_JSON_STR);
     }
 
     @AfterClass
-    public static void stopServer() {
+    public static void afterClass() {
         wireMockServer.stop();
     }
 
@@ -84,13 +81,12 @@ public class TimedRequestSenderTest {
     @Test
     public void putRequestTest() throws IOException, InterruptedException {
         // create the WireMock stub that:
-        //  - is available at URL localhost:8080/my/resource
-        //  - accepts JSON
+        //  - is available at URL localhost:[PORT][STUB_URL]
         //  - returns response with status=200, Content-Type=application/json, body={"success": true}
-        givenThat(put(urlEqualTo(stubUrl))
+        givenThat(put(urlEqualTo(STUB_URL))
                 .willReturn(aResponse()
-                        .withStatus(status)
-                        .withHeader("Content-Type", jsonTypeStr)
+                        .withStatus(HttpStatus.OK.value())
+                        .withHeader("Content-Type", MediaType.APPLICATION_JSON)
                         .withBody(responseBodyJsonNode.asText())));
 
         // create the timed request sender that will send a a request:
@@ -104,15 +100,15 @@ public class TimedRequestSenderTest {
 
         // assert that the response is equal to the WireMock response
         assertEquals(responseBodyJsonNode.asText(), response.body());
-        assertEquals(status, response.statusCode());
+        assertEquals(HttpStatus.OK.value(), response.statusCode());
         // assert that the time the request was sent is before the time the response ras recieved
         assertTrue(response.getTimeRequested().isBefore(response.getTimeReceived()));
 
         // verify that the request was received by the stub
         // on failure, throws com.github.tomakehurst.wiremock.client.VerificationException
-        verify(putRequestedFor(urlMatching(stubUrl))
+        verify(putRequestedFor(urlMatching(STUB_URL))
                 .withRequestBody(matching(".*" + requestBodyJsonNode.asText() + ".*"))
-                .withHeader("Content-Type", matching(jsonTypeStr)));
+                .withHeader("Content-Type", matching(MediaType.APPLICATION_JSON)));
     }
 
 
@@ -134,9 +130,9 @@ public class TimedRequestSenderTest {
 
     private static HttpRequest getCallTestHttpRequest() {
         return HttpRequest.newBuilder()
-                .uri(URI.create(wireMockServer.baseUrl() + stubUrl))
+                .uri(URI.create(wireMockServer.baseUrl() + STUB_URL))
                 .PUT(HttpRequest.BodyPublishers.ofString(requestBodyJsonNode.asText()))
-                .header("Content-Type", jsonTypeStr)
+                .header("Content-Type", MediaType.APPLICATION_JSON)
                 .build();
     }
 
