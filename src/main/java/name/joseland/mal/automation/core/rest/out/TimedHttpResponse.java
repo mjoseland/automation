@@ -102,10 +102,8 @@ public class TimedHttpResponse<T> implements HttpResponse<T>, Comparable<TimedHt
 
         result = Integer.compare(System.identityHashCode(httpResponse),
                 System.identityHashCode(o.httpResponse));
-        if (result != 0)
-            return result;
 
-        return 0;
+        return result;
     }
 
 
