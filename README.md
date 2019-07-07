@@ -20,7 +20,7 @@ Service per branch with docker image builds available.
 #### Eureka Service Registry
 **Primary Branch:** EurekaServiceRegistry<br>
 * Service registration and discovery
-* Discovery typically only utilised by the [Request Repository](#request-repository)
+* Discovery typically only utilised by the [request repository](#request-repository)
 
 #### Groovy Script Repository
 **Primary Branch:** N/A<br>
@@ -34,7 +34,8 @@ Service per branch with docker image builds available.
 * API supports matching for supplied input
 * Match results as 2D array (row per match, column per group)
 
-#### Request Repository <a name="request-repository"></a>
+<a name="request-repository"></a>
+#### Request Repository
 **Primary Branch:** DataApi-RequestRepository<br>
 
 * HTTP request CRUD
@@ -53,18 +54,19 @@ When a scheduled request is triggered:
 3. The response to step 2 is ignored and discarded, excepting logging
 
 Scheduled request item config can be subject to CRUD operations at any time through a data API.
-All changes come into effect immediately.
+All immediately update the currently running schedule.
 
 #### Sequencer
 **Primary Branch:** N/A<br>
 
 * API call control flows CRUD and execution
-* Branching/chaining as chosen [Request Repository](#request-repository) item for next call
+* Branching/chaining as chosen [request repository](#request-repository) item for next call
 * Branching dependent on response code to previous request
 * Can send as body one of:
   * the (nullable) body stored against the request in the request repository
   * the body of the response to the previous request
 
+<a name="signal-message-sender"></a>
 #### Signal Message Sender
 **Primary Branch:** N/A<br>
 
@@ -77,7 +79,7 @@ All changes come into effect immediately.
 * Stores string version history
 * Handles requests containing a current value of a string
 * Logs the entry and the string's value, if it doesn't match the prior entry
-* Optional notifications when new versions are stored
+* Optional [signal notifications](#signal-message-sender) when updates occur
 
 #### Template Repository
 **Primary Branch:** N/A<br>
