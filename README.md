@@ -1,90 +1,86 @@
-A single-user, general-purpose application with a focus on automating day-to-day information seeking and filtering.
-Built in a microservices architecture with docker image builds available for all services.
-
-Feature-specific readme files with API documentation and build/deploy instructions will be written once a basic level
-of functionality has been achieved.
-
-In this repository, Git branching is used to isolate the resources for individual services.
+A collection of interoperable services with a focus on highly configurable automated information retrieval and
+processing.
+Service per branch with docker image builds available.
 
 # Scope
-#### Features (Complete)
-* 
 
-#### Features (Planned)
-* Highly configurable events that recruit multiple services
-* API call scheduling for internal services
-* Data source retrieval with tests and conditional handlers
-* Email notifications
-* Other notification delivery methods (long term)
-* Calendar API interaction (long term)
-* Front end for all configuration operations (long term)
+#### Planned Features
+* Task scheduling
+* Remotely configurable API call control flows
+* Notifications and commands (long term) via signal
+* Web GUI (long term)
 
-#### Use Cases
-* Notifications for online store pricing updates or sales
-* Machine uptime monitoring
-* Blog post notifications
-* Digital media releases
+#### Example Use Cases
+* Web resource history with change notifications
+* Machine or resource availability monitoring
 * Conditional weather alerts
-* Centralised Anki (long term)
 
-# Services
+## Web Services
+
+#### Eureka Service Registry
+**Primary Branch:** EurekaServiceRegistry<br>
+* Service registration and discovery
+* Discovery typically only utilised by the [Request Repository](#request-repository)
+
+#### Groovy Script Repository
+**Primary Branch:** N/A<br>
+* Groovy script CRUD
+* Supports remote calls to groovy scripts 
+* Restricted to input and output as JSON
+
+#### Regex Repository
+**Primary Branch:** N/A<br>
+* Regex CRUD
+* API supports matching for supplied input
+* Match results as 2D array (row per match, column per group)
+
+#### Request Repository <a name="request-repository"></a>
+**Primary Branch:** DataApi-RequestRepository<br>
+
+* HTTP request CRUD
+* An internal (to the application) request is stores an HTTP method, service ID, resource path, array of header
+  fields, and JSON body (nullable).
+* An external request stores an HTTP method, URL, array of header fields, and a text body (nullable).
+* Both internal and external requests available in "assembled" form, which can easily be used by clients to construct
+  an HTTP request
+
 #### Scheduler
 **Primary Branch:** DataApi-SchedulerConfig<br>
-**Singleton:** Y<br>
-**Stateful:** Y
 
 When a scheduled request is triggered:
-1. Config for an internal (to the application) JSON-body HTTP request is retrieved from the request repository.
-2. The request is assembled and sent.
-3. The response to step 2 is stored as part of the scheduled request's short term history.
+1. Config for an HTTP request is retrieved from the request repository
+2. The request is assembled and sent
+3. The response to step 2 is ignored and discarded, excepting logging
 
-Scheduled request item config can be subject to CRUD operations at any time through a data API. Any changes immediately 
-start, stop, or modify the scheduled request that corresponds to the config. Short term scheduled request history is 
-available as GET call to the associated config resource.
+Scheduled request item config can be subject to CRUD operations at any time through a data API.
+All changes come into effect immediately.
 
-TODO:
-* Scheduled request manager for high-level implementation of steps 1-3
-* Scheduled request start, stop, modify automatic triggering on config CRUD using the manager
-* Interval scheduling as a number of milliseconds
-* Document API on branch readme
-
-#### Request Repository
-**Primary Branch:** DataApi-RequestRepository<br>
-**Singleton:** N<br>
-**Stateful:** Y
-
-* Internal (to the application) request config data API. An internal request is associated with a HTTP method, service 
-  ID, resource ID, and JSON body (optional).
-* External request config data API. An external request stores a HTTP method, URI, and a String body (optional).
-* Document API on branch readme
-
-#### Text Source Checker
+#### Sequencer
 **Primary Branch:** N/A<br>
-**Singleton:** N<br>
-**Stateful:** Y
 
-Stores resources store the information necessary to:
-1. Retrieves an internal or external HTTP request from the request repository
-2. Assembles and sends the request
-3. With the received response: performs a configurable test and optional associated translation to a JSON object
-4. If the test passes, sends the JSON reduction to a configurable internal service
+* API call control flows CRUD and execution
+* Branching/chaining as chosen [Request Repository](#request-repository) item for next call
+* Branching dependent on response code to previous request
+* Can send as body one of:
+  * the (nullable) body stored against the request in the request repository
+  * the body of the response to the previous request
 
-TODO:
-* Everything
-
-#### Email Notifier
+#### Signal Message Sender
 **Primary Branch:** N/A<br>
-**Singleton:** N<br>
-**Stateful:** Y
 
-Sends an email notification on receiving a valid request.
+* Account per service instance
+* Handles requests to send messages with supplied username and string
 
-**Required Fields:**<br>
-* Email address
-* Subject
+#### String History Repository
+**Primary Branch:** N/A<br>
 
-**Optional Fields:**<br>
-* Body
+* Stores string version history
+* Handles requests containing a current value of a string
+* Logs the entry and the string's value, if it doesn't match the prior entry
+* Optional notifications when new versions are stored
 
-TODO:
-* Everything
+#### Template Repository
+**Primary Branch:** N/A<br>
+
+* Text template CRUD
+* Supports generating text from a template for supplied JSON input
