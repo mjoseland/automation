@@ -33,7 +33,7 @@ public class RequestRepositoryRetriever {
     RequestRepositoryRetriever(@Value("${automation.request-repository.id}") String requestRepositoryId,
                                @Value("${automation.request-repository.context-path}")
                                        String requestRepositoryContextPath,
-                               @Value("${assembled-request-noun}") String assembledRequestNoun,
+                               @Value("${automation.request-repository.assembled-request-noun}") String assembledRequestNoun,
                                @Autowired InternalRequestUriAssembler internalRequestUriAssembler) {
         this.requestRepositoryId = requestRepositoryId;
         this.requestRepositoryContextPath = requestRepositoryContextPath;

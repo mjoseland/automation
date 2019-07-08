@@ -7,6 +7,10 @@
     {
       "name": "automation.request-repository.context-path",
       "type": "java.lang.String"
+    },
+    {
+      "name": "automation.request-repository.assembled-request-noun",
+      "type": "java.lang.String"
     }
   ]
 }
