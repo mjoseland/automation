@@ -9,11 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Optional;
 
 /**
  * Retrieves stored HTTP request from the request repository service.
@@ -23,6 +25,7 @@ public class RequestRepositoryRetriever {
 
     private final String requestRepositoryId;
     private final String requestRepositoryContextPath;
+    private final String assembledRequestNoun;
 
     private final InternalRequestUriAssembler internalRequestUriAssembler;
 
@@ -30,38 +33,40 @@ public class RequestRepositoryRetriever {
     RequestRepositoryRetriever(@Value("${automation.request-repository.id}") String requestRepositoryId,
                                @Value("${automation.request-repository.context-path}")
                                        String requestRepositoryContextPath,
+                               @Value("${automation.request-repository.assembled-request-noun}") String assembledRequestNoun,
                                @Autowired InternalRequestUriAssembler internalRequestUriAssembler) {
         this.requestRepositoryId = requestRepositoryId;
         this.requestRepositoryContextPath = requestRepositoryContextPath;
+        this.assembledRequestNoun = assembledRequestNoun;
         this.internalRequestUriAssembler = internalRequestUriAssembler;
     }
 
 
     /**
-     * Queries and returns a request stored in the repository.
+     * Retrieves and a request stored in the request repository and returns it as a constructed
+     * {@link HttpRequest}.
      *
-     * @param internalRequestId the ID of the stored request eg. 52
-     * @return                  the retrieved request
+     * @param resourceLink  eg. /internal-requests/52
+     * @return              the retrieved and assembled request
      */
-    public HttpRequest retrieveInternalRequest(int internalRequestId) throws IOException,
-            InterruptedException, InternalServiceNotFoundException, URISyntaxException,
-            InvalidInternalServiceRequestParameter {
-        // get the request repository URI
-        URI requestRepositoryUri = internalRequestUriAssembler.fromResourcePath(requestRepositoryId,
-                requestRepositoryContextPath + "/internal-requests/" + internalRequestId);
+    public HttpRequest getConstructedRequest(String resourceLink) throws IOException, InterruptedException,
+            InternalServiceNotFoundException, URISyntaxException, InvalidInternalServiceRequestParameter {
+        // get a URI to retrieve the assembled request stored in the body as JSON
+        String resourcePath = requestRepositoryContextPath + resourceLink + assembledRequestNoun;
+        URI requestRepositoryUri = internalRequestUriAssembler.fromResourcePath(requestRepositoryId, resourcePath);
 
         // get the response from the request repository
         HttpRequest request = HttpRequest.newBuilder()
+				.GET()
                 .uri(requestRepositoryUri)
-                .header("Accept", "application/json")
-                .GET()
+                .header("Accept", MediaType.APPLICATION_JSON)
                 .build();
         BasicRequestSender<JsonNode> requestSender = BasicRequestSender.build(request, new JsonBodyHandler());
         HttpResponse<JsonNode> response = requestSender.call();
 
         // return a HttpRequest built from the resource retrieved from the request repository
         JsonNode body = response.body();
-        return internalRequestFromJsonNode(body);
+        return requestFromJsonNode(body);
     }
 
 
@@ -74,44 +79,44 @@ public class RequestRepositoryRetriever {
      * Assembles an {@link HttpRequest} from a {@link JsonNode} stored request that has been retrieved from the
      * repository.
      *
-     * Example JSON object (required fields only):
+     * Example JSON objects:
      *  {
-     *     "id": 2,
      *     "httpMethod": "GET",
-     *     "serviceId": "data-source-monitor",
-     *     "resource": "/http-monitors/2/perform-check",
+     *     "url": "http://www.test.com/",
+     *  }
+     *  {
+     *     "httpMethod": "POST",
+     *     "url": "http://10.6.2.55/http-monitors/2/monitor"
      *     "body": {
      *         [body_fields]
      *     }
-     * }
+     *  }
+     *  {
+     *     "httpMethod": "PUT",
+     *     "url": "http://10.6.2.58/email-notification-config/2/notifier",
+     *     "body": {
+     *         [body_fields]
+     *     }
+     *  }
      *
      * @param requestAsJson the request in JSON format
      * @return              the assembled HttpRequest
      */
-    private HttpRequest internalRequestFromJsonNode(JsonNode requestAsJson) throws URISyntaxException,
-            InvalidInternalServiceRequestParameter, InternalServiceNotFoundException {
+    private HttpRequest requestFromJsonNode(JsonNode requestAsJson) throws InvalidInternalServiceRequestParameter {
         String httpMethodStr = requestAsJson.get("httpMethod").asText();
-
-        String serviceId = requestAsJson.get("serviceId").asText();
-        if ("".equals(serviceId))
-            throw new InvalidInternalServiceRequestParameter(requestRepositoryId,
-                    "serviceId field not specified");
-
-        String resourcePath = requestAsJson.get("resource").asText();
-        if ("".equals(resourcePath))
-            throw new InvalidInternalServiceRequestParameter(requestRepositoryId,
-                    "resource field not specified");
-
-        String bodyStr = requestAsJson.get("body").asText();
-
-        URI internalRequestUri = internalRequestUriAssembler.fromResourcePath(serviceId, resourcePath);
+        String uriStr = requestAsJson.get("url").textValue();
 
         HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
-                .uri(internalRequestUri)
+                .uri(URI.create(uriStr))
                 .header("Accept", "application/json");
 
-        return addHttpMethod(requestBuilder, httpMethodStr, HttpRequest.BodyPublishers.ofString(bodyStr))
-                .build();
+        Optional<JsonNode> bodyNodeOpt = Optional.ofNullable(requestAsJson.get("body"));
+
+        HttpRequest.BodyPublisher bodyPublisher = bodyNodeOpt
+                .map(jsonNode -> HttpRequest.BodyPublishers.ofString(jsonNode.toString()))
+                .orElseGet(HttpRequest.BodyPublishers::noBody);
+
+        return addHttpMethod(requestBuilder, httpMethodStr, bodyPublisher).build();
     }
 
     /**

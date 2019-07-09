@@ -44,7 +44,7 @@ public class TimedHttpResponse<T> implements HttpResponse<T>, Comparable<TimedHt
                                                  @NonNull LocalDateTime timeRequested,
                                                  @NonNull LocalDateTime timeReceived) {
         if (timeRequested != null && timeReceived != null && timeRequested.isAfter(timeReceived))
-            throw new IllegalArgumentException("Param timeRequested is before timeReceived");
+            throw new IllegalArgumentException("Param timeRequested is after timeReceived");
 
         return new TimedHttpResponse<>(Objects.requireNonNull(httpResponse),
                 Objects.requireNonNull(timeRequested), Objects.requireNonNull(timeReceived));
@@ -58,8 +58,8 @@ public class TimedHttpResponse<T> implements HttpResponse<T>, Comparable<TimedHt
 
     @Override
     public String toString() {
-        return "httpResponse=" + httpResponse.toString() +
-                ", timeRequested=" + timeRequested.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME) +
+        return "httpResponse=[" + httpResponse.toString() +
+                "], timeRequested=" + timeRequested.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME) +
                 ", timeReceived=" + timeReceived.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
     }
 
@@ -89,6 +89,9 @@ public class TimedHttpResponse<T> implements HttpResponse<T>, Comparable<TimedHt
 
     @Override
     public int compareTo(TimedHttpResponse<T> o) {
+        if (o == null)
+            return 1;
+
         int result = getTimeReceived().compareTo(o.getTimeReceived());
         if (result != 0)
             return result;
@@ -99,10 +102,8 @@ public class TimedHttpResponse<T> implements HttpResponse<T>, Comparable<TimedHt
 
         result = Integer.compare(System.identityHashCode(httpResponse),
                 System.identityHashCode(o.httpResponse));
-        if (result != 0)
-            return result;
 
-        return 0;
+        return result;
     }
 
 
