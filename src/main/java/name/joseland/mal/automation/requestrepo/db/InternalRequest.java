@@ -15,9 +15,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "rr_internal_request")
-@TypeDefs({
-        @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
-})
+@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 public class InternalRequest {
 
     @Id
