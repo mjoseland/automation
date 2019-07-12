@@ -82,11 +82,11 @@ public class RequestRepositoryRetriever {
      * Example JSON objects:
      *  {
      *     "httpMethod": "GET",
-     *     "url": "http://www.test.com/",
+     *     "url": "http://www.test.com/"
      *  }
      *  {
      *     "httpMethod": "POST",
-     *     "url": "http://10.6.2.55/http-monitors/2/monitor"
+     *     "url": "http://10.6.2.55/http-monitors/2/monitor",
      *     "body": {
      *         [body_fields]
      *     }
