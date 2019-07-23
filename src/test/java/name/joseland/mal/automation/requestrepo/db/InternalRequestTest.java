@@ -1,7 +1,7 @@
 package name.joseland.mal.automation.requestrepo.db;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.BooleanNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import name.joseland.mal.automation.core.GenericEntityTester;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -17,6 +17,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.testcontainers.containers.PostgreSQLContainer;
 
+import java.io.IOException;
+
 @RunWith(SpringRunner.class)
 @ContextConfiguration(initializers = {InternalRequestTest.Initializer.class})
 @DataJpaTest
@@ -31,8 +33,23 @@ public class InternalRequestTest {
     public static final String TEST_RESOURCE = "/trigger-configs/10";
     public static final String OTHER_TEST_RESOURCE = "/http-sources/11/perform-monitor";
 
-    public static final JsonNode TEST_BODY = BooleanNode.TRUE;
-    public static final JsonNode OTHER_TEST_BODY = BooleanNode.FALSE;
+    public static final JsonNode TEST_BODY;
+    public static final JsonNode OTHER_TEST_BODY;
+
+    static {
+        JsonNode testBodyNode;
+        JsonNode otherTestBodyNode;
+        try {
+            testBodyNode = new ObjectMapper().readTree("{ \"genericField\": 1 }");
+            otherTestBodyNode = new ObjectMapper().readTree("{ \"genericField\": 2 }");
+        } catch (IOException e) {
+            e.printStackTrace();
+            testBodyNode = null;
+            otherTestBodyNode = null;
+        }
+        TEST_BODY = testBodyNode;
+        OTHER_TEST_BODY = otherTestBodyNode;
+    }
 
 
     @ClassRule
