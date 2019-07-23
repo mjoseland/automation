@@ -87,7 +87,7 @@ public class InternalRequestController {
 
         return ResponseEntity
                 .created(new URI(savedInternalRequestResource.getId().expand().getHref()))
-                .body(savedInternalRequest);
+                .body(resourceAssembler.toResource(savedInternalRequest));
     }
 
     @DeleteMapping("internal-requests/{id}")
