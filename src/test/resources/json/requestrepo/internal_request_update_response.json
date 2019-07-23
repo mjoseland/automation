@@ -1,0 +1,17 @@
+{
+  "id": 1,
+  "httpMethod": "PUT",
+  "serviceId": "text-source-monitor",
+  "resource": "/http-sources/11/perform-monitor",
+  "body": {
+    "genericField": 2
+  },
+  "_links": {
+    "self": {
+      "href": "http://localhost/internal-requests/1"
+    },
+    "internal-requests": {
+      "href": "http://localhost/internal-requests"
+    }
+  }
+}

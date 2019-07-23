@@ -1,0 +1,8 @@
+{
+  "httpMethod": "GET",
+  "serviceId": "scheduler",
+  "resource": "/trigger-configs/10",
+  "body": {
+    "genericField": 1
+  }
+}
