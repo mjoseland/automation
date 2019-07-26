@@ -59,13 +59,13 @@ public class InternalRequestTest {
     @Autowired
     private InternalRequestRepository repository;
 
-    private GenericEntityTester<InternalRequest> tester;
+    private GenericEntityTester<InternalRequest, Integer> tester;
 
 
     @Before
     public void init() {
-        GenericEntityTester<InternalRequest> tester = GenericEntityTester.buildNew(InternalRequest::new,
-                repository);
+        GenericEntityTester<InternalRequest, Integer> tester =
+                GenericEntityTester.buildNew(InternalRequest::new, repository);
 
         tester.addField(TEST_HTTP_METHOD, OTHER_TEST_HTTP_METHOD, InternalRequest::getHttpMethod,
                 InternalRequest::setHttpMethod);

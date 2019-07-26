@@ -10,22 +10,28 @@ import java.util.function.Supplier;
 
 import static org.junit.Assert.assertEquals;
 
-public class GenericEntityTester<T> {
+/**
+ * Class for testing hibernate entities and repositories.
+ *
+ * @param <T>  the entity type
+ * @param <ID> the ID type of the entity's repository
+ */
+public class GenericEntityTester<T, ID> {
 
     private final Supplier<T> entityInitialiser;
-    private final JpaRepository<T, Integer> repository;
+    private final JpaRepository<T, ID> repository;
 
     private final List<EntityTestedField<?>> entityTestedFields;
 
-    private GenericEntityTester(Supplier<T> entityInitialiser, JpaRepository<T, Integer> repository) {
+    private GenericEntityTester(Supplier<T> entityInitialiser, JpaRepository<T, ID> repository) {
         this.entityInitialiser = entityInitialiser;
         this.repository = repository;
 
         this.entityTestedFields = new ArrayList<>();
     }
 
-    public static <U> GenericEntityTester<U> buildNew(Supplier<U> entityInitialiser,
-                                                      JpaRepository<U, Integer> repository) {
+    public static <T, ID> GenericEntityTester<T, ID> buildNew(Supplier<T> entityInitialiser,
+                                                      JpaRepository<T, ID> repository) {
         return new GenericEntityTester<>(entityInitialiser, repository);
     }
 

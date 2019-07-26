@@ -25,11 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * Abstract class for testing data API {@link org.springframework.web.bind.annotation.RestController} beans.
- *
- * Extending classes must be annotated with:
- *  {@link org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest} with value=[ResourceName]Controller.class
- *  and {@link org.springframework.context.annotation.Import} with value=[ResourceName]Assembler.class
+ * Class for testing data API {@link org.springframework.web.bind.annotation.RestController} beans.
  *
  * @param <T> the entity type
  * @param <ID> the entity's ID type
