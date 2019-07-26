@@ -9,8 +9,8 @@ import org.springframework.http.HttpMethod;
 import javax.persistence.*;
 
 /**
- * Stores a request that can be sent within the automation environment. Allows services to handle requests to be found
- * by serviceId eg. with Eureka.
+ * A request that can be sent within the automation environment. Allows services to specify hosts with a string ID eg.
+ * with Eureka.
  */
 @Entity
 @Table(name = "rr_internal_request")
