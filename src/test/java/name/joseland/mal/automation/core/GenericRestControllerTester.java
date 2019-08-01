@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Class for testing data API {@link org.springframework.web.bind.annotation.RestController} beans.
  *
- * @param <T> the entity type
+ * @param <T>  the entity type
  * @param <ID> the entity's ID type
  */
 public class GenericRestControllerTester<T, ID> {
@@ -60,7 +60,7 @@ public class GenericRestControllerTester<T, ID> {
 				.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_UTF8_VALUE))
-				.andExpect(content().json(expectedResponseJsonStr));
+				.andExpect(content().json(expectedResponseJsonStr, true));
 	}
 
 	public void performCreateTest(MockMvc mockMvc, JpaRepository<T, ID> repository, String requestFileName,
@@ -81,7 +81,7 @@ public class GenericRestControllerTester<T, ID> {
 				.andDo(print())
 				.andExpect(status().isCreated())
 				.andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_UTF8_VALUE))
-				.andExpect(content().json(expectedResponseBodyJsonStr));
+				.andExpect(content().json(expectedResponseBodyJsonStr, true));
 	}
 
 	public void performRetrieveTest(MockMvc mockMvc, JpaRepository<T, ID> repository, String expectedResponseFileName,
@@ -101,7 +101,7 @@ public class GenericRestControllerTester<T, ID> {
 				.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_UTF8_VALUE))
-				.andExpect(content().json(expectedResponseBodyJsonStr));
+				.andExpect(content().json(expectedResponseBodyJsonStr, true));
 	}
 
 	public void performUpdateTest(MockMvc mockMvc, JpaRepository<T, ID> repository, String requestFileName,
@@ -129,7 +129,7 @@ public class GenericRestControllerTester<T, ID> {
 				.andDo(print())
 				.andExpect(status().isCreated())
 				.andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_UTF8_VALUE))
-				.andExpect(content().json(expectedResponseBodyJsonStr));
+				.andExpect(content().json(expectedResponseBodyJsonStr, true));
 	}
 
 	public void performDeleteRequest(MockMvc mockMvc, JpaRepository<T, ID> repository, T entityInstance)
