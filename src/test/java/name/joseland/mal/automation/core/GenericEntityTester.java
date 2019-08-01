@@ -14,7 +14,7 @@ import static org.junit.Assert.assertEquals;
  * Class for testing hibernate entities and repositories.
  *
  * @param <T>  the entity type
- * @param <ID> the ID type of the entity's repository
+ * @param <ID> the entity's ID type
  */
 public class GenericEntityTester<T, ID> {
 
