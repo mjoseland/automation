@@ -90,24 +90,30 @@ public class GenericEntityTester<T, ID> {
         repository.save(instance);
 
         // find saved instances, assert 1
-        List<T> retrivedInstances = repository.findAll();
-        assertEquals(1, retrivedInstances.size());
+        List<T> retrievedInstances = repository.findAll();
+        assertEquals(1, retrievedInstances.size());
 
         // for each field; set updateTestValue to the retrieved instance
-        T retrievedInstance = retrivedInstances.get(0);
+        T retrievedInstance = retrievedInstances.get(0);
         entityTestedFields.forEach(entityTestedField ->
                 entityTestedField.setUpdateTestValueToInstance(retrievedInstance));
         repository.save(retrievedInstance);
 
         // find saved instances, assert 1
-        List<T> retrivedInstancesAfterUpdate = repository.findAll();
-        assertEquals(1, retrivedInstances.size());
+        List<T> retrievedInstancesAfterUpdate = repository.findAll();
+        assertEquals(1, retrievedInstances.size());
 
         // assert all fields set to updateTestValue
-        T retrievedInstanceAfterUpdate = retrivedInstancesAfterUpdate.get(0);
+        T retrievedInstanceAfterUpdate = retrievedInstancesAfterUpdate.get(0);
         entityTestedFields.forEach(entityTestedField ->
                 assertEquals(entityTestedField.updateTestValue,
                         entityTestedField.getter.apply(retrievedInstanceAfterUpdate)));
+    }
+
+    public <U> void saveNewInstanceWithSetterApplied(BiConsumer<T, U> setter, U value) {
+        T testEntity = getNewTestInstance();
+        setter.accept(testEntity, value);
+        repository.save(testEntity);
     }
 
     private T getNewTestInstance() {
