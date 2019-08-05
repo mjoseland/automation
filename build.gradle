@@ -2,6 +2,7 @@ buildscript {
     ext {
         springBootVersion = '2.1.1.RELEASE'
         gradleDockerVersion = '0.21.0'
+        jUnitJupiterVersion = '5.3.2'
     }
     repositories {
         mavenCentral()
@@ -46,6 +47,16 @@ dependencyManagement {
     }
 }
 
+test {
+    useJUnitPlatform {
+        includeEngines 'junit-jupiter'
+    }
+}
+
+ext {
+    jUnitJupiterVersion = '5.3.2'
+}
+
 dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
     providedRuntime group: 'org.springframework.boot', name: 'spring-boot-starter-tomcat'
@@ -53,7 +64,11 @@ dependencies {
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-client'
     implementation group: 'javax.ws.rs', name: 'javax.ws.rs-api', version: '2.1.1'
 
-    testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+    testImplementation(group: 'org.springframework.boot', name: 'spring-boot-starter-test') {
+        exclude group: 'junit', module: 'junit'
+    }
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: "${jUnitJupiterVersion}"
+    testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: "${jUnitJupiterVersion}"
     testImplementation group: 'com.github.tomakehurst', name: 'wiremock-jre8', version: '2.23.2'
 
     // ORM
@@ -62,7 +77,6 @@ dependencies {
     runtimeOnly group: 'org.postgresql', name: 'postgresql'
     testImplementation group: 'org.testcontainers', name: 'testcontainers', version: '1.11.3'
     testImplementation group: 'org.testcontainers', name: 'postgresql', version: '1.11.3'
-
 
     testImplementation group: 'org.testcontainers', name: 'testcontainers', version: '1.11.3'
     testImplementation group: 'org.testcontainers', name: 'postgresql', version: '1.11.3'
