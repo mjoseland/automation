@@ -65,7 +65,7 @@ public class TimedResponseHistoryTest {
 	@Test
 	public void timedResponseExpiryTest() throws InterruptedException {
 		// the duration (in ms)
-		long delayTime = 500;
+		long delayTime = 1000;
 
 		Duration testDuration = Duration.ofMillis(delayTime);
 		TimedResponseHistory<String> timedResponseHistory = TimedResponseHistory.build(testDuration);
