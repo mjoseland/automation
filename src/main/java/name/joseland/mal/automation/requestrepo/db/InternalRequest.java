@@ -7,6 +7,7 @@ import org.hibernate.annotations.TypeDef;
 import org.springframework.http.HttpMethod;
 
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 
 /**
  * A request that can be sent within the automation environment. Allows services to specify hosts with a string ID eg.
@@ -28,10 +29,12 @@ public class InternalRequest {
 
     // eg. "data-source-monitor"
     @Column(name = "service_id")
+    @Pattern(regexp = "(?:(?:[a-z\\d]+-?[a-z\\d]+)*|(?:[a-z\\d]))")
     private String serviceId;
 
     // should start with "/", eg. "/http-monitors/2/perform-check"
-    @Column(name = "resource_id")
+    @Column(name = "resource")
+	@Pattern(regexp = "(?:/(?:(?:[a-z\\d]+-?[a-z\\d]+)+|(?:[a-z\\d])))+")
     private String resource;
 
     @Type(type = "jsonb")

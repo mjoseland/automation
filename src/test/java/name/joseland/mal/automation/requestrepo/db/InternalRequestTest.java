@@ -17,7 +17,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.testcontainers.containers.PostgreSQLContainer;
 
+import javax.validation.ConstraintViolationException;
 import java.io.IOException;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(initializers = {InternalRequestTest.Initializer.class})
@@ -92,6 +95,69 @@ public class InternalRequestTest {
     @Test
     public void update() {
         tester.update();
+    }
+
+    @Test
+    public void testServiceIdRegexPasses() {
+        tester.saveNewInstanceWithSetterApplied(InternalRequest::setServiceId, "s");
+        tester.saveNewInstanceWithSetterApplied(InternalRequest::setServiceId, "1");
+        tester.saveNewInstanceWithSetterApplied(InternalRequest::setServiceId, "a-s");
+        tester.saveNewInstanceWithSetterApplied(InternalRequest::setServiceId, "service");
+        tester.saveNewInstanceWithSetterApplied(InternalRequest::setServiceId, "service2");
+        tester.saveNewInstanceWithSetterApplied(InternalRequest::setServiceId, "another-service");
+        tester.saveNewInstanceWithSetterApplied(InternalRequest::setServiceId, "longer-named-service");
+    }
+
+    @Test
+    public void testServiceIdRegexFailure() {
+    	assertThrows(ConstraintViolationException.class,
+                () -> tester.saveNewInstanceWithSetterApplied(InternalRequest::setServiceId, "-"));
+        assertThrows(ConstraintViolationException.class,
+                () -> tester.saveNewInstanceWithSetterApplied(InternalRequest::setServiceId, "service-"));
+        assertThrows(ConstraintViolationException.class,
+                () -> tester.saveNewInstanceWithSetterApplied(InternalRequest::setServiceId, "-service"));
+        assertThrows(ConstraintViolationException.class,
+                () -> tester.saveNewInstanceWithSetterApplied(InternalRequest::setServiceId, "another-service-"));
+        assertThrows(ConstraintViolationException.class,
+                () -> tester.saveNewInstanceWithSetterApplied(InternalRequest::setServiceId, "-another-service"));
+        assertThrows(ConstraintViolationException.class,
+                () -> tester.saveNewInstanceWithSetterApplied(InternalRequest::setServiceId, "another--service"));
+        assertThrows(ConstraintViolationException.class,
+                () -> tester.saveNewInstanceWithSetterApplied(InternalRequest::setServiceId, "Service"));
+        assertThrows(ConstraintViolationException.class,
+                () -> tester.saveNewInstanceWithSetterApplied(InternalRequest::setServiceId, "SERVICE"));
+        assertThrows(ConstraintViolationException.class,
+                () -> tester.saveNewInstanceWithSetterApplied(InternalRequest::setServiceId, "another_service"));
+    }
+
+    @Test
+    public void testResourceRegexPasses() {
+        tester.saveNewInstanceWithSetterApplied(InternalRequest::setResource, "/o");
+        tester.saveNewInstanceWithSetterApplied(InternalRequest::setResource, "/resource");
+        tester.saveNewInstanceWithSetterApplied(InternalRequest::setResource, "/resource/1");
+        tester.saveNewInstanceWithSetterApplied(InternalRequest::setResource, "/other-resource");
+        tester.saveNewInstanceWithSetterApplied(InternalRequest::setResource, "/longer-named-resource");
+        tester.saveNewInstanceWithSetterApplied(InternalRequest::setResource, "/o-r");
+    }
+
+    @Test
+    public void testResourceRegexFailure() {
+        assertThrows(ConstraintViolationException.class,
+                () -> tester.saveNewInstanceWithSetterApplied(InternalRequest::setResource, "/"));
+        assertThrows(ConstraintViolationException.class,
+                () -> tester.saveNewInstanceWithSetterApplied(InternalRequest::setResource, "/resource/"));
+        assertThrows(ConstraintViolationException.class,
+                () -> tester.saveNewInstanceWithSetterApplied(InternalRequest::setResource, "/resource//55"));
+        assertThrows(ConstraintViolationException.class,
+                () -> tester.saveNewInstanceWithSetterApplied(InternalRequest::setResource, "resource/33"));
+        assertThrows(ConstraintViolationException.class,
+                () -> tester.saveNewInstanceWithSetterApplied(InternalRequest::setResource, "/other--resource"));
+        assertThrows(ConstraintViolationException.class,
+                () -> tester.saveNewInstanceWithSetterApplied(InternalRequest::setResource, "/resource-"));
+        assertThrows(ConstraintViolationException.class,
+                () -> tester.saveNewInstanceWithSetterApplied(InternalRequest::setResource, "/-resource"));
+        assertThrows(ConstraintViolationException.class,
+                () -> tester.saveNewInstanceWithSetterApplied(InternalRequest::setResource, "/o--r"));
     }
 
 
