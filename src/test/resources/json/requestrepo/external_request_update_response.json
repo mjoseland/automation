@@ -1,0 +1,19 @@
+{
+  "id": 1,
+  "description": "other test description",
+  "httpMethod": "PUT",
+  "url": "http://other-url.com/other-resource",
+  "headerFields": {
+    "other_test_key2": "other_test_value2",
+    "other_test_key": "other_test_value"
+  },
+  "body": "other test body",
+  "_links": {
+    "self": {
+      "href": "http://localhost/external-requests/1"
+    },
+    "external-requests": {
+      "href": "http://localhost/external-requests"
+    }
+  }
+}

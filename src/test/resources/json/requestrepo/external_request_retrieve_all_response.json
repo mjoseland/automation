@@ -1,0 +1,49 @@
+{
+  "_embedded": {
+    "externalRequestList": [
+      {
+        "id": 1,
+        "description": "test description",
+        "httpMethod": "GET",
+        "url": "http://test.com/resource",
+        "headerFields": {
+          "test_key2": "test_value2",
+          "test_key": "test_value"
+        },
+        "body": "test body",
+        "_links": {
+          "self": {
+            "href": "http://localhost/external-requests/1"
+          },
+          "external-requests": {
+            "href": "http://localhost/external-requests"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "description": "other test description",
+        "httpMethod": "PUT",
+        "url": "http://other-url.com/other-resource",
+        "headerFields": {
+          "other_test_key2": "other_test_value2",
+          "other_test_key": "other_test_value"
+        },
+        "body": "other test body",
+        "_links": {
+          "self": {
+            "href": "http://localhost/external-requests/2"
+          },
+          "external-requests": {
+            "href": "http://localhost/external-requests"
+          }
+        }
+      }
+    ]
+  },
+  "_links": {
+    "self": {
+      "href": "http://localhost/external-requests"
+    }
+  }
+}

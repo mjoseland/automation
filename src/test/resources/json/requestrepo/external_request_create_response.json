@@ -1,0 +1,19 @@
+{
+  "id": 1,
+  "description": "test description",
+  "httpMethod": "GET",
+  "url": "http://test.com/resource",
+  "headerFields": {
+    "test_key2": "test_value2",
+    "test_key": "test_value"
+  },
+  "body": "test body",
+  "_links": {
+    "self": {
+      "href": "http://localhost/external-requests/1"
+    },
+    "external-requests": {
+      "href": "http://localhost/external-requests"
+    }
+  }
+}
