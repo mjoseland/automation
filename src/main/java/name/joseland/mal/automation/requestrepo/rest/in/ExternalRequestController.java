@@ -1,6 +1,8 @@
 package name.joseland.mal.automation.requestrepo.rest.in;
 
 import name.joseland.mal.automation.core.rest.in.exception.ResourceNotFoundException;
+import name.joseland.mal.automation.core.rest.out.internal.HttpRequestDto;
+import name.joseland.mal.automation.requestrepo.HttpRequestDtoBuilder;
 import name.joseland.mal.automation.requestrepo.db.ExternalRequest;
 import name.joseland.mal.automation.requestrepo.db.ExternalRequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,15 +29,17 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 @RestController
 public class ExternalRequestController {
 
-
 	private final ExternalRequestRepository repository;
 	private final ExternalRequestAssembler resourceAssembler;
+	private final HttpRequestDtoBuilder httpRequestDtoBuilder;
 
 
 	ExternalRequestController(@Autowired ExternalRequestRepository repository,
-			@Autowired ExternalRequestAssembler resourceAssembler) {
+			 				  @Autowired ExternalRequestAssembler resourceAssembler,
+							  @Autowired HttpRequestDtoBuilder httpRequestDtoBuilder) {
 		this.repository = repository;
 		this.resourceAssembler = resourceAssembler;
+		this.httpRequestDtoBuilder = httpRequestDtoBuilder;
 	}
 
 
@@ -73,8 +77,18 @@ public class ExternalRequestController {
 		return resourceAssembler.toResource(externalRequestOpt.get());
 	}
 
+	@GetMapping("/external-requests/{id}/http-request-dto")
+	public HttpRequestDto retrieveHttpRequestDto(@PathVariable int id) {
+		Optional<ExternalRequest> externalRequestOpt = repository.findById(id);
+
+		if (externalRequestOpt.isEmpty())
+			throw new ResourceNotFoundException("ExternalRequest", id);
+
+		return httpRequestDtoBuilder.fromExternalRequest(externalRequestOpt.get());
+	}
+
 	@PutMapping("external-requests/{id}")
-	public ResponseEntity<?> update(@RequestBody ExternalRequest newExternalRequest,
+	public ResponseEntity<Resource<ExternalRequest>> update(@RequestBody ExternalRequest newExternalRequest,
 			@PathVariable int id) throws URISyntaxException {
 		ExternalRequest savedExternalRequest = repository.findById(id)
 				.map(externalRequest -> {
@@ -100,7 +114,7 @@ public class ExternalRequestController {
 	}
 
 	@DeleteMapping("external-requests/{id}")
-	public ResponseEntity<?> delete(@PathVariable int id) {
+	public ResponseEntity delete(@PathVariable int id) {
 		Optional<ExternalRequest> externalRequestOpt = repository.findById(id);
 
 		if (externalRequestOpt.isEmpty())

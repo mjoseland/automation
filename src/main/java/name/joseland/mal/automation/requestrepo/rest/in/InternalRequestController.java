@@ -1,6 +1,9 @@
 package name.joseland.mal.automation.requestrepo.rest.in;
 
 import name.joseland.mal.automation.core.rest.in.exception.ResourceNotFoundException;
+import name.joseland.mal.automation.core.rest.out.internal.HttpRequestDto;
+import name.joseland.mal.automation.requestrepo.HttpRequestDtoBuilder;
+import name.joseland.mal.automation.core.rest.out.internal.exception.InternalServiceNotFoundException;
 import name.joseland.mal.automation.requestrepo.db.InternalRequest;
 import name.joseland.mal.automation.requestrepo.db.InternalRequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +26,15 @@ public class InternalRequestController {
 
     private final InternalRequestRepository repository;
     private final InternalRequestAssembler resourceAssembler;
+    private final HttpRequestDtoBuilder httpRequestDtoBuilder;
 
 
     InternalRequestController(@Autowired InternalRequestRepository repository,
-                              @Autowired InternalRequestAssembler resourceAssembler) {
+                              @Autowired InternalRequestAssembler resourceAssembler,
+                              @Autowired HttpRequestDtoBuilder httpRequestDtoBuilder) {
         this.repository = repository;
         this.resourceAssembler = resourceAssembler;
+        this.httpRequestDtoBuilder = httpRequestDtoBuilder;
     }
 
 
@@ -66,8 +72,19 @@ public class InternalRequestController {
         return resourceAssembler.toResource(internalRequestOpt.get());
     }
 
+
+    @GetMapping("/internal-requests/{id}/http-request-dto")
+    public HttpRequestDto retrieveHttpRequestDto(@PathVariable int id) throws InternalServiceNotFoundException {
+        Optional<InternalRequest> internalRequestOpt = repository.findById(id);
+
+        if (internalRequestOpt.isEmpty())
+            throw new ResourceNotFoundException("ExternalRequest", id);
+
+        return httpRequestDtoBuilder.fromInternalRequest(internalRequestOpt.get());
+    }
+
     @PutMapping("internal-requests/{id}")
-    public ResponseEntity<?> update(@RequestBody InternalRequest newInternalRequest,
+    public ResponseEntity<Resource<InternalRequest>> update(@RequestBody InternalRequest newInternalRequest,
                                     @PathVariable int id) throws URISyntaxException {
         InternalRequest savedInternalRequest = repository.findById(id)
                 .map(internalRequest -> {
@@ -91,7 +108,7 @@ public class InternalRequestController {
     }
 
     @DeleteMapping("internal-requests/{id}")
-    public ResponseEntity<?> delete(@PathVariable int id) {
+    public ResponseEntity delete(@PathVariable int id) {
         Optional<InternalRequest> internalRequestOpt = repository.findById(id);
 
         if (internalRequestOpt.isEmpty())
