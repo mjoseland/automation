@@ -148,17 +148,11 @@ public class GenericRestControllerTester<T, ID> {
 				.andExpect(content().string(""));
 	}
 
-
-	/* ********************************************************************************************************** */
-	/* ********************************************* PRIVATE METHODS ******************************************** */
-	/* ********************************************************************************************************** */
-
-
-	private String getContextPath() {
+	public String getContextPath() {
 		return contextPath;
 	}
 
-	private String retrieveJsonFileAsString(String fileName) throws FileNotFoundException {
+	public String retrieveJsonFileAsString(String fileName) throws FileNotFoundException {
 		File file = new File(fileName);
 		Scanner sc = new Scanner(file).useDelimiter("\\Z");
 		String internalRequestAsStr = sc.next();
