@@ -12,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -98,6 +99,24 @@ public class InternalRequestTest {
     }
 
     @Test
+    public void testHttpMethodNonNull() {
+        assertThrows(DataIntegrityViolationException.class,
+                () -> tester.saveNewInstanceWithSetterApplied(InternalRequest::setHttpMethod, null));
+    }
+
+    @Test
+    public void testServiceIdNonNull() {
+        assertThrows(DataIntegrityViolationException.class,
+                () -> tester.saveNewInstanceWithSetterApplied(InternalRequest::setServiceId, null));
+    }
+
+    @Test
+    public void testResourceNonNull() {
+        assertThrows(DataIntegrityViolationException.class,
+                () -> tester.saveNewInstanceWithSetterApplied(InternalRequest::setResource, null));
+    }
+
+    @Test
     public void testServiceIdRegexPasses() {
         tester.saveNewInstanceWithSetterApplied(InternalRequest::setServiceId, "s");
         tester.saveNewInstanceWithSetterApplied(InternalRequest::setServiceId, "1");
@@ -109,7 +128,7 @@ public class InternalRequestTest {
     }
 
     @Test
-    public void testServiceIdRegexFailure() {
+    public void testServiceIdRegexFailures() {
     	assertThrows(ConstraintViolationException.class,
                 () -> tester.saveNewInstanceWithSetterApplied(InternalRequest::setServiceId, "-"));
         assertThrows(ConstraintViolationException.class,

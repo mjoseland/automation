@@ -12,6 +12,7 @@ import javax.validation.constraints.Pattern;
 /**
  * A request that can be sent within the automation environment. Allows services to specify hosts with a string ID eg.
  * with Eureka.
+ * TODO add description
  */
 @Entity
 @Table(name = "rr_internal_request")
@@ -23,22 +24,22 @@ public class InternalRequest {
     private Integer id;
 
     // aka. HTTP verb
-    @Column(name = "http_method")
+    @Column(name = "http_method", nullable = false)
     @Enumerated(EnumType.STRING)
     private HttpMethod httpMethod;
 
     // eg. "data-source-monitor"
-    @Column(name = "service_id")
+    @Column(name = "service_id", nullable = false, length = 64)
     @Pattern(regexp = "(?:(?:[a-z\\d]+-?[a-z\\d]+)*|(?:[a-z\\d]))")
     private String serviceId;
 
     // should start with "/", eg. "/http-monitors/2/perform-check"
-    @Column(name = "resource")
+    @Column(name = "resource", nullable = false)
 	@Pattern(regexp = "(?:/(?:(?:[a-z\\d]+-?[a-z\\d]+)+|(?:[a-z\\d])))+")
     private String resource;
 
-    @Type(type = "jsonb")
     @Column(name = "body", columnDefinition = "jsonb")
+    @Type(type = "jsonb")
     private JsonNode body;
 
 
