@@ -7,6 +7,8 @@ import name.joseland.mal.automation.requestrepo.db.ExternalRequest;
 import name.joseland.mal.automation.requestrepo.db.InternalRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -40,8 +42,11 @@ public class HttpRequestDtoBuilder {
 
 		String url = serviceInstance.getUri() + internalRequest.getResource();
 
+		HashMap<String, String> headerHeaders = new HashMap<>();
+		headerHeaders.put(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+
 		return new HttpRequestDto(internalRequest.getHttpMethod(), url,
-				new HashMap<>(), internalRequest.getBody().toString());
+				headerHeaders, internalRequest.getBody().toString());
 	}
 
 	/**
