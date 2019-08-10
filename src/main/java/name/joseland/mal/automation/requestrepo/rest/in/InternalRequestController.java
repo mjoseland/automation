@@ -88,6 +88,7 @@ public class InternalRequestController {
                                     @PathVariable int id) throws URISyntaxException {
         InternalRequest savedInternalRequest = repository.findById(id)
                 .map(internalRequest -> {
+                    internalRequest.setDescription(newInternalRequest.getDescription());
                     internalRequest.setHttpMethod(newInternalRequest.getHttpMethod());
                     internalRequest.setServiceId(newInternalRequest.getServiceId());
                     internalRequest.setResource(newInternalRequest.getResource());

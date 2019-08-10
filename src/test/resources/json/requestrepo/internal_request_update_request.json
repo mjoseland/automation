@@ -1,4 +1,5 @@
 {
+  "description": "other description",
   "httpMethod": "PUT",
   "serviceId": "text-source-monitor",
   "resource": "/http-sources/11/perform-monitor",

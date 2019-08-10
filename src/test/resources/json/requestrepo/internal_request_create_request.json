@@ -1,4 +1,5 @@
 {
+  "description": "description",
   "httpMethod": "GET",
   "serviceId": "scheduler",
   "resource": "/trigger-configs/10",

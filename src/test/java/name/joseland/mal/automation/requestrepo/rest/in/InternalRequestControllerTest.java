@@ -151,6 +151,7 @@ public class InternalRequestControllerTest {
 	private InternalRequest getTestInternalRequest() {
 		InternalRequest internalRequest = new InternalRequest();
 		internalRequest.setId(1);
+		internalRequest.setDescription(InternalRequestTest.TEST_DESCRIPTION);
 		internalRequest.setHttpMethod(InternalRequestTest.TEST_HTTP_METHOD);
 		internalRequest.setServiceId(InternalRequestTest.TEST_SERVICE_ID);
 		internalRequest.setResource(InternalRequestTest.TEST_RESOURCE);
@@ -162,6 +163,7 @@ public class InternalRequestControllerTest {
 	private InternalRequest getAlternativeTestInternalRequest() {
 		InternalRequest internalRequest = new InternalRequest();
 		internalRequest.setId(2);
+		internalRequest.setDescription(InternalRequestTest.OTHER_TEST_DESCRIPTION);
 		internalRequest.setHttpMethod(InternalRequestTest.OTHER_TEST_HTTP_METHOD);
 		internalRequest.setServiceId(InternalRequestTest.OTHER_TEST_SERVICE_ID);
 		internalRequest.setResource(InternalRequestTest.OTHER_TEST_RESOURCE);

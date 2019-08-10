@@ -23,6 +23,9 @@ public class InternalRequest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+	@Column(name = "description", nullable = false)
+	private String description;
+
     // aka. HTTP verb
     @Column(name = "http_method", nullable = false)
     @Enumerated(EnumType.STRING)
@@ -86,6 +89,14 @@ public class InternalRequest {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public HttpMethod getHttpMethod() {

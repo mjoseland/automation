@@ -28,6 +28,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @DataJpaTest
 public class InternalRequestTest {
 
+    public static final String TEST_DESCRIPTION = "description";
+    public static final String OTHER_TEST_DESCRIPTION = "other description";
+
     public static final HttpMethod TEST_HTTP_METHOD = HttpMethod.GET;
     public static final HttpMethod OTHER_TEST_HTTP_METHOD = HttpMethod.PUT;
 
@@ -71,6 +74,8 @@ public class InternalRequestTest {
         GenericEntityTester<InternalRequest, Integer> tester =
                 GenericEntityTester.buildNew(InternalRequest::new, repository);
 
+        tester.addField(TEST_DESCRIPTION, OTHER_TEST_DESCRIPTION, InternalRequest::getDescription,
+                InternalRequest::setDescription);
         tester.addField(TEST_HTTP_METHOD, OTHER_TEST_HTTP_METHOD, InternalRequest::getHttpMethod,
                 InternalRequest::setHttpMethod);
         tester.addField(TEST_SERVICE_ID, OTHER_TEST_SERVICE_ID, InternalRequest::getServiceId,

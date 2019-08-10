@@ -3,6 +3,7 @@
     "internalRequestList": [
       {
         "id": 1,
+        "description": "description",
         "httpMethod": "GET",
         "serviceId": "scheduler",
         "resource": "/trigger-configs/10",
@@ -20,6 +21,7 @@
       },
       {
         "id": 2,
+        "description": "other description",
         "httpMethod": "PUT",
         "serviceId": "text-source-monitor",
         "resource": "/http-sources/11/perform-monitor",
