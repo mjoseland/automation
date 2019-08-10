@@ -19,9 +19,6 @@ import java.util.Map;
 
 /**
  * An HTTP request that can be sent to any URL.
- *
- * TODO field lengths
- * TODO regex on string fields
  */
 @Entity
 @Table(name = "rr_external_request")
@@ -31,15 +28,15 @@ public class ExternalRequest {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@Column(name = "description")
+	@Column(name = "description", nullable = false)
 	private String description;
 
 	// aka. HTTP verb
-	@Column(name = "http_method")
+	@Column(name = "http_method", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private HttpMethod httpMethod;
 
-	@Column(name = "url")
+	@Column(name = "url", nullable = false)
 	private String url;
 
 	// eg. key="Accept", value="application/hal+json;charset=UTF-8"
@@ -47,7 +44,6 @@ public class ExternalRequest {
 	@CollectionTable(name = "rr_external_request_header_field",
 					 joinColumns = @JoinColumn(name = "rr_external_request_id"))
 	@MapKeyColumn(name = "field")
-	@Column(name = "value")
 	private Map<String, String> headerFields = new HashMap<>();
 
 	@Column(name = "body")

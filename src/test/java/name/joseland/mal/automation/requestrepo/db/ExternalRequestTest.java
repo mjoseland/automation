@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -17,6 +18,8 @@ import org.testcontainers.containers.PostgreSQLContainer;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(initializers = ExternalRequestTest.Initializer.class)
@@ -89,6 +92,24 @@ public class ExternalRequestTest {
 	@Test
 	public void update() {
 		tester.update();
+	}
+
+	@Test
+	public void testDescriptionNonNull() {
+		assertThrows(DataIntegrityViolationException.class,
+				() -> tester.saveNewInstanceWithSetterApplied(ExternalRequest::setDescription, null));
+	}
+
+	@Test
+	public void testHttpMethodNonNull() {
+		assertThrows(DataIntegrityViolationException.class,
+				() -> tester.saveNewInstanceWithSetterApplied(ExternalRequest::setHttpMethod, null));
+	}
+
+	@Test
+	public void testUrlNonNull() {
+		assertThrows(DataIntegrityViolationException.class,
+				() -> tester.saveNewInstanceWithSetterApplied(ExternalRequest::setUrl, null));
 	}
 
 
