@@ -1,5 +1,5 @@
 {
-  "httpMethod": "GET",
+  "httpMethod": "POST",
   "url": "localhost:8088/scheduler/trigger-configs/10",
   "headerFields": {},
   "body": "{\"genericField\":1}"

@@ -31,7 +31,7 @@ public class InternalRequestTest {
     public static final String TEST_DESCRIPTION = "description";
     public static final String OTHER_TEST_DESCRIPTION = "other description";
 
-    public static final HttpMethod TEST_HTTP_METHOD = HttpMethod.GET;
+    public static final HttpMethod TEST_HTTP_METHOD = HttpMethod.POST;
     public static final HttpMethod OTHER_TEST_HTTP_METHOD = HttpMethod.PUT;
 
     public static final String TEST_SERVICE_ID = "scheduler";

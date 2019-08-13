@@ -4,7 +4,7 @@
       {
         "id": 1,
         "description": "description",
-        "httpMethod": "GET",
+        "httpMethod": "POST",
         "serviceId": "scheduler",
         "resource": "/trigger-configs/10",
         "body": {

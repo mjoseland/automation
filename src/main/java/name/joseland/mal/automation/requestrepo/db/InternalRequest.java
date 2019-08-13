@@ -12,7 +12,6 @@ import javax.validation.constraints.Pattern;
 /**
  * A request that can be sent within the automation environment. Allows services to specify hosts with a string ID eg.
  * with Eureka.
- * TODO add description
  */
 @Entity
 @Table(name = "rr_internal_request")
