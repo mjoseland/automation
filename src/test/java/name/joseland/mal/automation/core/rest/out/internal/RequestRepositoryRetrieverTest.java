@@ -37,12 +37,12 @@ public class RequestRepositoryRetrieverTest {
 	// hardcoded so the unit test isn't reliant on config
 	private static final String REQUEST_REPOSITORY_ID = "request-repository";
 	private static final String REQUEST_REPOSITORY_CONTEXT_PATH = "/request-repository";
-	private static final String ASSEMBLED_REQUEST_NOUN = "/assembled";
+	private static final String HTTP_REQUEST_DTO_NOUN = "/http-request-dto";
 	private static final int INTERNAL_REQUEST_ID = 99;
 
 	private final static String INTERNAL_REQUEST_RESOURCE_LINK = "/internal-requests/" + INTERNAL_REQUEST_ID;
 	private static final String INTERNAL_REQUEST_RESOURCE_PATH = REQUEST_REPOSITORY_CONTEXT_PATH +
-			INTERNAL_REQUEST_RESOURCE_LINK + ASSEMBLED_REQUEST_NOUN;
+			INTERNAL_REQUEST_RESOURCE_LINK + HTTP_REQUEST_DTO_NOUN;
 
 	private static final String REQUEST_BODY_JSON_FILE_NAME =
 			"src/test/resources/json/request_repository_retriever_internal_request.json";
@@ -104,7 +104,7 @@ public class RequestRepositoryRetrieverTest {
 
 		// build the RequestRepositoryRetriever
 		RequestRepositoryRetriever requestRepositoryRetriever = new RequestRepositoryRetriever(REQUEST_REPOSITORY_ID,
-				REQUEST_REPOSITORY_CONTEXT_PATH, ASSEMBLED_REQUEST_NOUN, mockInternalRequestUriAssembler);
+				REQUEST_REPOSITORY_CONTEXT_PATH, HTTP_REQUEST_DTO_NOUN, mockInternalRequestUriAssembler);
 
 		// retrieve the internal request
 		HttpRequest retrievedInternalRequest =
