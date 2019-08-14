@@ -29,7 +29,7 @@ public class ExternalRequestTest {
 	public static final String TEST_DESCRIPTION = "test description";
 	public static final String OTHER_TEST_DESCRIPTION = "other test description";
 
-	public static final HttpMethod TEST_HTTP_METHOD = HttpMethod.GET;
+	public static final HttpMethod TEST_HTTP_METHOD = HttpMethod.POST;
 	public static final HttpMethod OTHER_TEST_HTTP_METHOD = HttpMethod.PUT;
 
 	public static final String TEST_URL = "http://test.com/resource";

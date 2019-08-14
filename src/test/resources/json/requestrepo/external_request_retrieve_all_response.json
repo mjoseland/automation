@@ -4,7 +4,7 @@
       {
         "id": 1,
         "description": "test description",
-        "httpMethod": "GET",
+        "httpMethod": "POST",
         "url": "http://test.com/resource",
         "headerFields": {
           "test_key2": "test_value2",
