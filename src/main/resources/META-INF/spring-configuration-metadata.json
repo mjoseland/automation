@@ -9,7 +9,7 @@
       "type": "java.lang.String"
     },
     {
-      "name": "automation.request-repository.assembled-request-noun",
+      "name": "automation.request-repository.http-request-dto-noun",
       "type": "java.lang.String"
     }
   ]

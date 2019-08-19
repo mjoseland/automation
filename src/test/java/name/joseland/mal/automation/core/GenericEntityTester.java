@@ -10,22 +10,28 @@ import java.util.function.Supplier;
 
 import static org.junit.Assert.assertEquals;
 
-public class GenericEntityTester<T> {
+/**
+ * Class for testing hibernate entities and repositories.
+ *
+ * @param <T>  the entity type
+ * @param <ID> the entity's ID type
+ */
+public class GenericEntityTester<T, ID> {
 
     private final Supplier<T> entityInitialiser;
-    private final JpaRepository<T, Integer> repository;
+    private final JpaRepository<T, ID> repository;
 
     private final List<EntityTestedField<?>> entityTestedFields;
 
-    private GenericEntityTester(Supplier<T> entityInitialiser, JpaRepository<T, Integer> repository) {
+    private GenericEntityTester(Supplier<T> entityInitialiser, JpaRepository<T, ID> repository) {
         this.entityInitialiser = entityInitialiser;
         this.repository = repository;
 
         this.entityTestedFields = new ArrayList<>();
     }
 
-    public static <U> GenericEntityTester<U> buildNew(Supplier<U> entityInitialiser,
-                                                      JpaRepository<U, Integer> repository) {
+    public static <T, ID> GenericEntityTester<T, ID> buildNew(Supplier<T> entityInitialiser,
+                                                      JpaRepository<T, ID> repository) {
         return new GenericEntityTester<>(entityInitialiser, repository);
     }
 
@@ -84,24 +90,30 @@ public class GenericEntityTester<T> {
         repository.save(instance);
 
         // find saved instances, assert 1
-        List<T> retrivedInstances = repository.findAll();
-        assertEquals(1, retrivedInstances.size());
+        List<T> retrievedInstances = repository.findAll();
+        assertEquals(1, retrievedInstances.size());
 
         // for each field; set updateTestValue to the retrieved instance
-        T retrievedInstance = retrivedInstances.get(0);
+        T retrievedInstance = retrievedInstances.get(0);
         entityTestedFields.forEach(entityTestedField ->
                 entityTestedField.setUpdateTestValueToInstance(retrievedInstance));
         repository.save(retrievedInstance);
 
         // find saved instances, assert 1
-        List<T> retrivedInstancesAfterUpdate = repository.findAll();
-        assertEquals(1, retrivedInstances.size());
+        List<T> retrievedInstancesAfterUpdate = repository.findAll();
+        assertEquals(1, retrievedInstances.size());
 
         // assert all fields set to updateTestValue
-        T retrievedInstanceAfterUpdate = retrivedInstancesAfterUpdate.get(0);
+        T retrievedInstanceAfterUpdate = retrievedInstancesAfterUpdate.get(0);
         entityTestedFields.forEach(entityTestedField ->
                 assertEquals(entityTestedField.updateTestValue,
                         entityTestedField.getter.apply(retrievedInstanceAfterUpdate)));
+    }
+
+    public <U> void saveNewInstanceWithSetterApplied(BiConsumer<T, U> setter, U value) {
+        T testEntity = getNewTestInstance();
+        setter.accept(testEntity, value);
+        repository.save(testEntity);
     }
 
     private T getNewTestInstance() {
