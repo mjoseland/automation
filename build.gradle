@@ -78,9 +78,6 @@ dependencies {
     testImplementation group: 'org.testcontainers', name: 'testcontainers', version: '1.11.3'
     testImplementation group: 'org.testcontainers', name: 'postgresql', version: '1.11.3'
 
-    testImplementation group: 'org.testcontainers', name: 'testcontainers', version: '1.11.3'
-    testImplementation group: 'org.testcontainers', name: 'postgresql', version: '1.11.3'
-
     // JAXB APIs removed from JDK 11
     compile group: 'javax.xml.bind', name: 'jaxb-api', version: '2.2.3'
     compile group: 'com.sun.xml.bind', name: 'jaxb-core', version: '2.3.0.1'

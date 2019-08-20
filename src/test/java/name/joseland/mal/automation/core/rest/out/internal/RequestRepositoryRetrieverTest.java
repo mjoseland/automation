@@ -45,7 +45,7 @@ public class RequestRepositoryRetrieverTest {
 			INTERNAL_REQUEST_RESOURCE_LINK + HTTP_REQUEST_DTO_NOUN;
 
 	private static final String REQUEST_BODY_JSON_FILE_NAME =
-			"src/test/resources/json/request_repository_retriever_internal_request.json";
+			"src/test/resources/json/core/request_repository_retriever_internal_request.json";
 
 	// see RequestRepositoryRetriever::internalRequestFromJsonNode
 	private static JsonNode internalRequestAsJson;
