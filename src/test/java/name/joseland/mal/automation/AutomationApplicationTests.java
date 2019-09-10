@@ -12,7 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(initializers = {AutomationApplicationTests.Initializer.class})
+@ContextConfiguration(initializers = { AutomationApplicationTests.Initializer.class })
 @SpringBootTest
 public class AutomationApplicationTests {
 

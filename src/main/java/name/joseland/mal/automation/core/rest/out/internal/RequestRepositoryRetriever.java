@@ -40,15 +40,16 @@ public class RequestRepositoryRetriever {
     /**
      * Queries and returns a request stored in the repository.
      *
-     * @param internalRequestId the ID of the stored request eg. 52
-     * @return                  the retrieved request
+	 * @param type          tye type of the stored request
+     * @param resourceId    the ID of the stored request eg. 52
+     * @return              the retrieved request
      */
-    public HttpRequest retrieveInternalRequest(int internalRequestId) throws IOException,
+    public HttpRequest retrieveStoredRequest(StoredRequestType type, int resourceId) throws IOException,
             InterruptedException, InternalServiceNotFoundException, URISyntaxException,
             InvalidInternalServiceRequestParameter {
         // get the request repository URI
         URI requestRepositoryUri = internalRequestUriAssembler.fromResourcePath(requestRepositoryId,
-                requestRepositoryContextPath + "/internal-requests/" + internalRequestId);
+                requestRepositoryContextPath + "/" + type.resourcePathSegment + "/" + resourceId);
 
         // get the response from the request repository
         HttpRequest request = HttpRequest.newBuilder()

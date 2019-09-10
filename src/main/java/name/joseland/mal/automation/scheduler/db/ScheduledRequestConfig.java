@@ -1,5 +1,7 @@
 package name.joseland.mal.automation.scheduler.db;
 
+import name.joseland.mal.automation.core.rest.out.internal.StoredRequestType;
+
 import javax.persistence.*;
 
 /**
@@ -19,10 +21,12 @@ public class ScheduledRequestConfig {
     @JoinColumn(name = "trigger_config_id")
     private TriggerConfig triggerConfig;
 
-    // appended to request repository IP and context path to form uri of a HTTP request
-    // eg. "/internal-requests/52/assembled"
-    @Column(name = "request_repository_mapping")
-    private String requestRepositoryMapping;
+    @Column(name = "request_type")
+    @Enumerated(EnumType.STRING)
+    private StoredRequestType requestType;
+
+    @Column(name = "request_id")
+    private int requestId;
 
 
     /* ********************************************************************************************************** */
@@ -33,7 +37,7 @@ public class ScheduledRequestConfig {
     @Override
     public String toString() {
         return "ScheduledRequestConfig id=" + getId() + ", triggerConfig=" + getTriggerConfig().toString() +
-                ", requestRepositoryMapping=" + getRequestRepositoryMapping();
+                ", requestType=" + getRequestType().name() + ", requestId=" + getRequestId();
     }
 
     @Override
@@ -77,12 +81,20 @@ public class ScheduledRequestConfig {
         this.triggerConfig = triggerConfig;
     }
 
-    public String getRequestRepositoryMapping() {
-        return requestRepositoryMapping;
+    public StoredRequestType getRequestType() {
+        return requestType;
     }
 
-    public void setRequestRepositoryMapping(String requestRepositoryMapping) {
-        this.requestRepositoryMapping = requestRepositoryMapping;
+    public void setRequestType(StoredRequestType requestType) {
+        this.requestType = requestType;
+    }
+
+    public int getRequestId() {
+        return requestId;
+    }
+
+    public void setRequestId(int requestId) {
+        this.requestId = requestId;
     }
 
 }

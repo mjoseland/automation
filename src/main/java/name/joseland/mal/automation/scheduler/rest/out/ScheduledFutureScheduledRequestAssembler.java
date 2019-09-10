@@ -47,11 +47,12 @@ public class ScheduledFutureScheduledRequestAssembler implements ScheduledReques
     public ScheduledFutureScheduledRequest assemble(ScheduledRequestConfig config) {
         // HttpRequest retrieved from the request repository at the url stored in the config
         HttpRequest request;
-        try {
-            request = requestRepositoryRetriever.fromResourcePath(config.getRequestRepositoryMapping());
-        } catch (IOException | InterruptedException e) {
-            throw new HttpRequestException(e.getMessage());
-        }
+        // TODO
+//        try {
+            request = null;//requestRepositoryRetriever.fromResourcePath(config.getRequestRepositoryMapping());
+//        } catch (IOException | InterruptedException e) {
+//            throw new HttpRequestException(e.getMessage());
+//        }
 
         // Callable that sends the request and returns its body
         TimedRequestSender<String> timedRequestSender = TimedRequestSender.build(request,
@@ -91,7 +92,8 @@ public class ScheduledFutureScheduledRequestAssembler implements ScheduledReques
             }
 
             // add the response to the response history
-            responseHistory.addTimedResponse(response);
+			// TODO
+//            responseHistory.addTimedResponse(response);
         };
     }
 

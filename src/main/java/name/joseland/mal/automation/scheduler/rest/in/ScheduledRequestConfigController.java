@@ -73,9 +73,9 @@ public class ScheduledRequestConfigController {
                                     @PathVariable int id) throws URISyntaxException {
         ScheduledRequestConfig savedScheduledRequestConfig = repository.findById(id)
                 .map(scheduledRequestConfig -> {
-                    scheduledRequestConfig
-                            .setRequestRepositoryMapping(newScheduledRequestConfig.getRequestRepositoryMapping());
                     scheduledRequestConfig.setTriggerConfig(newScheduledRequestConfig.getTriggerConfig());
+                    scheduledRequestConfig.setRequestType(newScheduledRequestConfig.getRequestType());
+                    scheduledRequestConfig.setRequestId(newScheduledRequestConfig.getRequestId());
 
                     return repository.save(scheduledRequestConfig);
                 }).orElseGet(() -> {

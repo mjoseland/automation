@@ -9,6 +9,7 @@ import javax.persistence.*;
 @Table(name = "sc_trigger_config")
 public class TriggerConfig {
 
+    // when a type is added, fix the test params in CronTriggerConfigTest
     public enum Type {
         CRON
     }
@@ -32,7 +33,7 @@ public class TriggerConfig {
 
     @Override
     public String toString() {
-        return "TriggerConfig id=" + getId() + ", type" + getType().name() + ", cronExpression=" + getCronExpression();
+        return "TriggerConfig id=" + getId() + ", type=" + getType().name() + ", cronExpression=" + getCronExpression();
     }
 
     @Override
