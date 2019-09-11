@@ -47,7 +47,8 @@ public class TriggerConfigController {
     }
 
     @PostMapping("/trigger-configs")
-    public ResponseEntity<?> create(@RequestBody TriggerConfig triggerConfig) throws URISyntaxException {
+    public ResponseEntity<Resource<TriggerConfig>> create(@RequestBody TriggerConfig triggerConfig)
+            throws URISyntaxException {
         Resource<TriggerConfig> triggerConfigResource = resourceAssembler.toResource(repository.save(triggerConfig));
 
         return ResponseEntity
@@ -66,7 +67,7 @@ public class TriggerConfigController {
     }
 
     @PutMapping("/trigger-configs/{id}")
-    public ResponseEntity<?> update(@RequestBody TriggerConfig newTriggerConfig,
+    public ResponseEntity<Resource<TriggerConfig>> update(@RequestBody TriggerConfig newTriggerConfig,
                                     @PathVariable int id) throws URISyntaxException {
         TriggerConfig savedTriggerConfig = repository.findById(id)
                 .map(triggerConfig -> {
@@ -88,12 +89,13 @@ public class TriggerConfigController {
 
     // TODO handle TriggerConfigs that are still referenced by a ScheduledRequestConfig
     @DeleteMapping("/trigger-configs/{id}")
-    public ResponseEntity<?> delete(@PathVariable int id) {
-        try {
-            repository.deleteById(id);
-        } catch (EmptyResultDataAccessException e) {
+    public ResponseEntity delete(@PathVariable int id) {
+        Optional<TriggerConfig> triggerConfigOpt = repository.findById(id);
+
+        if (triggerConfigOpt.isEmpty())
             throw new ResourceNotFoundException("TriggerConfig", id);
-        }
+
+        repository.delete(triggerConfigOpt.get());
 
         return ResponseEntity.noContent().build();
     }

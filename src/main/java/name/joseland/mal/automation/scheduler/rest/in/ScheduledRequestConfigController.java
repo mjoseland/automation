@@ -48,8 +48,8 @@ public class ScheduledRequestConfigController {
     }
 
     @PostMapping("/scheduled-request-configs")
-    public ResponseEntity<?> create(@RequestBody ScheduledRequestConfig scheduledRequestConfig)
-            throws URISyntaxException {
+    public ResponseEntity<Resource<ScheduledRequestConfig>> create(
+            @RequestBody ScheduledRequestConfig scheduledRequestConfig) throws URISyntaxException {
         Resource<ScheduledRequestConfig> scheduledRequestConfigResource =
                 resourceAssembler.toResource(repository.save(scheduledRequestConfig));
 
@@ -69,8 +69,9 @@ public class ScheduledRequestConfigController {
     }
 
     @PutMapping("/scheduled-request-configs/{id}")
-    public ResponseEntity<?> update(@RequestBody ScheduledRequestConfig newScheduledRequestConfig,
-                                    @PathVariable int id) throws URISyntaxException {
+    public ResponseEntity<Resource<ScheduledRequestConfig>> update(
+            @RequestBody ScheduledRequestConfig newScheduledRequestConfig, @PathVariable int id)
+            throws URISyntaxException {
         ScheduledRequestConfig savedScheduledRequestConfig = repository.findById(id)
                 .map(scheduledRequestConfig -> {
                     scheduledRequestConfig.setTriggerConfig(newScheduledRequestConfig.getTriggerConfig());
@@ -87,18 +88,19 @@ public class ScheduledRequestConfigController {
         Resource<ScheduledRequestConfig> scheduledRequestConfigResource =
                 resourceAssembler.toResource(savedScheduledRequestConfig);
 
-        return ResponseEntity.created(new URI(scheduledRequestConfigResource.getId().expand().getHref()))
+        return ResponseEntity
+                .created(new URI(scheduledRequestConfigResource.getId().expand().getHref()))
                 .body(scheduledRequestConfigResource);
     }
 
     @DeleteMapping("/scheduled-request-configs/{id}")
-    public ResponseEntity<?> delete(@PathVariable int id) {
-        try {
-            repository.deleteById(id);
-//            triggerConfigRepository.delete();
-        } catch (EmptyResultDataAccessException e) {
+    public ResponseEntity delete(@PathVariable int id) {
+        Optional<ScheduledRequestConfig> requestConfigOpt = repository.findById(id);
+
+        if (requestConfigOpt.isEmpty())
             throw new ResourceNotFoundException("ScheduledRequestConfig", id);
-        }
+
+        repository.delete(requestConfigOpt.get());
 
         return ResponseEntity.noContent().build();
     }
