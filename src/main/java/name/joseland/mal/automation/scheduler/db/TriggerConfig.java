@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Table(name = "sc_trigger_config")
 public class TriggerConfig {
 
-    // when a type is added, fix the test params in CronTriggerConfigTest
+    // when a type is added, fix the test params in TriggerConfigTest
     public enum Type {
         CRON
     }
@@ -17,7 +17,7 @@ public class TriggerConfig {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(name = "itype")
     @Enumerated(EnumType.STRING)

@@ -4,7 +4,6 @@ import name.joseland.mal.automation.core.rest.in.exception.ResourceNotFoundExcep
 import name.joseland.mal.automation.scheduler.db.TriggerConfig;
 import name.joseland.mal.automation.scheduler.db.TriggerConfigRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.ResponseEntity;
