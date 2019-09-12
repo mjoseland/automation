@@ -43,14 +43,14 @@ public class ScheduledRequestConfigTest {
 
         // create test TriggerConfig instance
         TriggerConfig testTriggerConfig = new TriggerConfig();
-        testTriggerConfig.setType(CronTriggerConfigTest.TEST_TYPE);
-        testTriggerConfig.setCronExpression(CronTriggerConfigTest.TEST_CRON_EXPRESSION);
+        testTriggerConfig.setType(TriggerConfigTest.TEST_TYPE);
+        testTriggerConfig.setCronExpression(TriggerConfigTest.TEST_CRON_EXPRESSION);
         triggerConfigRepository.save(testTriggerConfig);
 
         // create update test TriggerConfig instance
         TriggerConfig updateTestTriggerConfig = new TriggerConfig();
-        updateTestTriggerConfig.setType(CronTriggerConfigTest.OTHER_TEST_TYPE);
-        updateTestTriggerConfig.setCronExpression(CronTriggerConfigTest.OTHER_TEST_CRON_EXPRESSION);
+        updateTestTriggerConfig.setType(TriggerConfigTest.OTHER_TEST_TYPE);
+        updateTestTriggerConfig.setCronExpression(TriggerConfigTest.OTHER_TEST_CRON_EXPRESSION);
         triggerConfigRepository.save(updateTestTriggerConfig);
 
         // add trigger config field

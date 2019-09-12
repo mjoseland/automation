@@ -15,9 +15,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(initializers = { CronTriggerConfigTest.Initializer.class })
+@ContextConfiguration(initializers = { TriggerConfigTest.Initializer.class })
 @DataJpaTest
-public class CronTriggerConfigTest {
+public class TriggerConfigTest {
 
     public static final TriggerConfig.Type TEST_TYPE = TriggerConfig.Type.CRON;
     public static final TriggerConfig.Type OTHER_TEST_TYPE = TriggerConfig.Type.CRON;
