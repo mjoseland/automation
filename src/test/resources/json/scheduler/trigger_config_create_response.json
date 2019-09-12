@@ -1,0 +1,13 @@
+{
+  "id": 1,
+  "type": "CRON",
+  "cronExpression": "0 15 10 ? * *",
+  "_links": {
+    "self": {
+      "href": "http://localhost/trigger-configs/1"
+    },
+    "trigger-configs": {
+      "href": "http://localhost/trigger-configs"
+    }
+  }
+}

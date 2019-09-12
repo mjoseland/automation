@@ -1,0 +1,10 @@
+{
+  "id": 1,
+  "triggerConfig": {
+    "id": 2,
+    "type": "CRON",
+    "cronExpression": "10 21 01 ? * *"
+  },
+  "requestType": "EXTERNAL",
+  "requestId": 2
+}

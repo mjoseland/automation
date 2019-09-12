@@ -1,0 +1,37 @@
+{
+  "_embedded": {
+    "triggerConfigList": [
+      {
+        "id": 1,
+        "type": "CRON",
+        "cronExpression": "0 15 10 ? * *",
+        "_links": {
+          "self": {
+            "href": "http://localhost/trigger-configs/1"
+          },
+          "trigger-configs": {
+            "href": "http://localhost/trigger-configs"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "type": "CRON",
+        "cronExpression": "10 21 01 ? * *",
+        "_links": {
+          "self": {
+            "href": "http://localhost/trigger-configs/2"
+          },
+          "trigger-configs": {
+            "href": "http://localhost/trigger-configs"
+          }
+        }
+      }
+    ]
+  },
+  "_links": {
+    "self": {
+      "href": "http://localhost/trigger-configs"
+    }
+  }
+}

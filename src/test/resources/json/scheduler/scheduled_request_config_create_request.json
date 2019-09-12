@@ -1,0 +1,17 @@
+{
+  "triggerConfig": {
+    "id": 1,
+    "type": "CRON",
+    "cronExpression": "0 15 10 ? * *"
+  },
+  "requestType": "INTERNAL",
+  "requestId": 1,
+  "_links": {
+    "self": {
+      "href": "http://localhost/scheduled-request-configs/1"
+    },
+    "scheduled-request-configs": {
+      "href": "http://localhost/scheduled-request-configs"
+    }
+  }
+}
