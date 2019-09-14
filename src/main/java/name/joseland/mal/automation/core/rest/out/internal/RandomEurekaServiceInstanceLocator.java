@@ -4,7 +4,6 @@ import name.joseland.mal.automation.core.rest.out.internal.exception.InternalSer
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -16,7 +15,6 @@ import java.util.Random;
  * Returns a randomly selected instance from those found by {@link DiscoveryClient}.
  */
 @Component
-@Scope(value = "singleton")
 public class RandomEurekaServiceInstanceLocator implements ServiceInstanceLocator {
 
     private final DiscoveryClient discoveryClient;

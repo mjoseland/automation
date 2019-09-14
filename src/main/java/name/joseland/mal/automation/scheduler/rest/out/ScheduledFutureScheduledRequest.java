@@ -1,23 +1,20 @@
 package name.joseland.mal.automation.scheduler.rest.out;
 
-import name.joseland.mal.automation.core.rest.out.TimedResponseHistory;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.util.concurrent.ScheduledFuture;
 
 public class ScheduledFutureScheduledRequest implements ScheduledRequest {
     @Value("${automation.scheduler.scheduled-request.interrupt-if-running}")
-    private static boolean INTERRUPT_IF_RUNNING;
+    private static boolean interruptIfRunning;
 
     private final ScheduledFuture scheduledFuture;
-    private final TimedResponseHistory<String> responseHistory;
 
     private boolean active;
 
 
-    ScheduledFutureScheduledRequest(ScheduledFuture scheduledFuture, TimedResponseHistory<String> responseHistory) {
+    ScheduledFutureScheduledRequest(ScheduledFuture scheduledFuture) {
         this.scheduledFuture = scheduledFuture;
-        this.responseHistory = responseHistory;
         this.active = true;
     }
 
@@ -44,17 +41,6 @@ public class ScheduledFutureScheduledRequest implements ScheduledRequest {
     /* ********************************************* GETTERS/SETTERS ******************************************** */
     /* ********************************************************************************************************** */
 
-
-    /**
-     * Gets a defensive copy of the history of responses received by requests sent by this object. Implementing types
-     * may control the history's cutoff time.
-     *
-     * @return responses received by requests sent by this object
-     */
-    @Override
-    public TimedResponseHistory<String> getResponseHistory() {
-        return responseHistory;
-    }
 
     /**
      * Returns true if this object is active. The result of this method can only change once and can only

@@ -18,6 +18,7 @@ import java.net.http.HttpResponse;
 /**
  * Retrieves stored HTTP request from the request repository service.
  */
+// TODO unit tests
 @Component
 public class RequestRepositoryRetriever {
 

@@ -12,6 +12,7 @@ import java.net.http.HttpResponse;
 /**
  * {@link HttpResponse.BodyHandler} implementation for a response with a JSON-formatted body.
  */
+// TODO unit tests
 public class JsonBodyHandler implements HttpResponse.BodyHandler<JsonNode> {
 
     /**
@@ -25,8 +26,7 @@ public class JsonBodyHandler implements HttpResponse.BodyHandler<JsonNode> {
         HttpResponse.BodySubscriber<InputStream> stringSubscriber = HttpResponse.BodyHandlers.ofInputStream()
                 .apply(responseInfo);
 
-        return HttpResponse.BodySubscribers.mapping(stringSubscriber,
-                JsonBodyHandler::jsonFromInputStream);
+        return HttpResponse.BodySubscribers.mapping(stringSubscriber, JsonBodyHandler::jsonFromInputStream);
     }
 
 

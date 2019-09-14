@@ -14,6 +14,6 @@ public interface ScheduledRequestAssembler {
      * @param config    the ScheduledRequestConfig to assemble the ScheduledRequest from
      * @return          the ScheduledRequest
      */
-    ScheduledRequest assemble(@NonNull ScheduledRequestConfig config);
+    ScheduledRequest assemble(@NonNull ScheduledRequestConfig config) throws InterruptedException;
 
 }

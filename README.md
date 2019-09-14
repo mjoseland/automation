@@ -36,11 +36,9 @@ In this repository, Git branching is used to isolate the resources for individua
 When a scheduled request is triggered:
 1. Config for an internal (to the application) JSON-body HTTP request is retrieved from the request repository.
 2. The request is assembled and sent.
-3. The response to step 2 is stored as part of the scheduled request's short term history.
 
 Scheduled request item config can be subject to CRUD operations at any time through a data API. Any changes immediately 
-start, stop, or modify the scheduled request that corresponds to the config. Short term scheduled request history is 
-available as GET call to the associated config resource.
+start, stop, or modify the scheduled request that corresponds to the config.
 
 TODO:
 * Scheduled request manager for high-level implementation of steps 1-3

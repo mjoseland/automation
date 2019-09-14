@@ -1,14 +1,12 @@
 package name.joseland.mal.automation.scheduler.rest.out;
 
 import name.joseland.mal.automation.scheduler.db.TriggerConfig;
-import org.springframework.context.annotation.Scope;
 import org.springframework.lang.NonNull;
 import org.springframework.scheduling.Trigger;
 import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.stereotype.Component;
 
 @Component
-@Scope("singleton")
 public class TriggerAssembler {
 
     /**

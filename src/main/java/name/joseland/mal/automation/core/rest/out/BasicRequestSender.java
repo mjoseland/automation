@@ -15,7 +15,6 @@ import java.util.Objects;
  */
 public class BasicRequestSender<T> implements RequestSender<HttpResponse<T>, T> {
 
-
     private final HttpClient client;
     private final HttpRequest request;
     private final HttpResponse.BodyHandler<T> bodyHandler;
